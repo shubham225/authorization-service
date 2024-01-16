@@ -13,6 +13,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/{id}"
