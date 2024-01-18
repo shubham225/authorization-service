@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class CustomErrorController implements ErrorController {
     @RequestMapping(
-            path = "/error"
+            path = "/errors"
     )
     public ResponseEntity<ExceptionDto> handleError(Exception exception) {
         return new ResponseEntity<>(new ExceptionDto(HttpStatus.BAD_REQUEST, exception.getMessage()), HttpStatus.BAD_REQUEST);

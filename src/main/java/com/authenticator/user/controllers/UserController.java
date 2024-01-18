@@ -1,14 +1,16 @@
 package com.authenticator.user.controllers;
 
 import com.authenticator.user.dtos.UserDto;
+import com.authenticator.user.dtos.UserRequestDto;
 import com.authenticator.user.models.User;
 import com.authenticator.user.services.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/V1/user")
 public class UserController {
-    UserService userService;
+    private UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -32,9 +34,9 @@ public class UserController {
 
     @RequestMapping(
             method = RequestMethod.POST,
-            path = "/"
+            path = "/signup"
     )
-    public UserDto addUser(@RequestBody UserDto user) {
-        return new UserDto();
+    public UserDto addUser(@RequestBody UserRequestDto user) {
+        return userService.addUser(user);
     }
 }

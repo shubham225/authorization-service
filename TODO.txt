@@ -1,0 +1,2 @@
+- Create models for User, Session and Client
+- Implement Spring Authentication classes and replace inMemory implementations with concreate database.
