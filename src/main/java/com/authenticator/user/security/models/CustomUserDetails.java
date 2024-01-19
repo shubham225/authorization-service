@@ -1,14 +1,18 @@
 package com.authenticator.user.security.models;
 
 import com.authenticator.user.models.User;
+import org.hibernate.annotations.Comment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
+@Component
 public class CustomUserDetails implements UserDetails {
     private User user;
 
+    public CustomUserDetails() {}
     public CustomUserDetails(User user) {
         this.user = user;
     }
@@ -30,17 +34,17 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
