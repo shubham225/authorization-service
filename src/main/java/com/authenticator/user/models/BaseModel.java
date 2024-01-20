@@ -13,5 +13,6 @@ import lombok.Setter;
 @MappedSuperclass
 public class BaseModel {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 }

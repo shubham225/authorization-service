@@ -1,4 +1,4 @@
-package com.authenticator.user.security;
+package com.authenticator.user.security.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
