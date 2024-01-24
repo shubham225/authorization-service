@@ -1,5 +1,9 @@
 package com.userservice.authorization.security.models;
 
+/**
+ * This is special class used by spring security to store clients.
+ */
+
 import java.time.Instant;
 
 import jakarta.persistence.Column;

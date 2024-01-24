@@ -1,5 +1,10 @@
 package com.userservice.authorization.security.repositories;
 
+/**
+ * This Repository uses custom client ad authorizations from security.models this is the actual object used by spring security
+ * which is replaced with default inmemory implementation from SecurityConfiguration.
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

@@ -1,10 +1,15 @@
 package com.userservice.authorization.security.models;
 
+/**
+ * This class will provide user info to spring auth server to validate user login, custom user class is used to store user info in database.
+ */
+
 import com.userservice.authorization.models.Role;
 import com.userservice.authorization.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,11 +18,11 @@ import java.util.List;
 
 @Component
 @NoArgsConstructor
-@JsonSerialize(as = UserDetails.class)
-public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
+@JsonSerialize(as = MyUserDetails.class)
+public class MyUserDetails implements UserDetails {
     private User user;
 
-    public UserDetails(User user) {
+    public MyUserDetails(User user) {
         this.user = user;
     }
 
