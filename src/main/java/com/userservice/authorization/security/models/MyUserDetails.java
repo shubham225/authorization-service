@@ -9,6 +9,7 @@ import com.userservice.authorization.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +18,14 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
-@NoArgsConstructor
 @JsonSerialize(as = MyUserDetails.class)
 public class MyUserDetails implements UserDetails {
     private User user;
+
+    public MyUserDetails() {
+        // TODO : Find why, if i do not initialize the user object here spring gives user object null error.
+        user = new User();
+    }
 
     public MyUserDetails(User user) {
         this.user = user;
@@ -28,11 +33,11 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     @JsonIgnore
-    public Collection<? extends org.springframework.security.core.GrantedAuthority> getAuthorities() {
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         List<org.springframework.security.core.GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         for(Role role : user.getRoles()) {
-            grantedAuthorities.add(new GrantedAuthority(role));
+            grantedAuthorities.add(new MyGrantedAuthority(role));
         }
 
         return grantedAuthorities;
