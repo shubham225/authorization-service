@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
@@ -19,9 +18,9 @@ public class User extends BaseModel {
     private String  username;
     private String  password;
     private boolean isActive;
-    private boolean isCredentialsNonExpired;
-    private boolean isAccountNonLocked;
-    private boolean isAccountNonExpired;
+    private boolean isCredentialsExpired;
+    private boolean isAccountLocked;
+    private boolean isAccountExpired;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
@@ -31,9 +30,9 @@ public class User extends BaseModel {
         this.username = "";
         this.password = "";
         this.isActive = false;
-        this.isAccountNonExpired = true;
-        this.isAccountNonLocked = true;
-        this.isCredentialsNonExpired = true;
+        this.isAccountExpired = false;
+        this.isAccountLocked = false;
+        this.isCredentialsExpired = false;
         this.roles = new HashSet<>();
     }
 }

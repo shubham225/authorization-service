@@ -13,8 +13,6 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
-import com.userservice.authorization.models.User;
-import com.userservice.authorization.security.models.MyUserDetails;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -168,7 +166,7 @@ public class SecurityConfiguration {
                 context.getClaims().claims((claims) -> {
                     // TODO : Getting null user object this needs to be fixed, from MyUserDetails no arg constructor
                     // Get the User Details Object
-                    MyUserDetails userDetails = getMyUserDetailsFromAuthorizations(
+                    org.springframework.security.core.userdetails.User userDetails = getMyUserDetailsFromAuthorizations(
                                                     Objects.requireNonNull(context.getAuthorization()));
 
                     Set<String> roles = AuthorityUtils.authorityListToSet(userDetails.getAuthorities())
@@ -181,10 +179,10 @@ public class SecurityConfiguration {
         };
     }
 
-    private MyUserDetails getMyUserDetailsFromAuthorizations(OAuth2Authorization authorization) {
+    private org.springframework.security.core.userdetails.User getMyUserDetailsFromAuthorizations(OAuth2Authorization authorization) {
         Map<String, Object> authorizations = authorization.getAttributes();
         UsernamePasswordAuthenticationToken usernamePasswdAuthToken =
                 (UsernamePasswordAuthenticationToken) authorizations.get("java.security.Principal");
-        return (MyUserDetails) usernamePasswdAuthToken.getPrincipal();
+        return (org.springframework.security.core.userdetails.User) usernamePasswdAuthToken.getPrincipal();
     }
 }

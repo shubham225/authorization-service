@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
+//@Entity
 public class Session extends BaseModel {
     @ManyToOne
     private User            user;

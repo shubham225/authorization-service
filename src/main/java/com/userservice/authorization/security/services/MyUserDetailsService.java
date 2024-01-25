@@ -3,10 +3,6 @@ package com.userservice.authorization.security.services;
 import com.userservice.authorization.models.Role;
 import com.userservice.authorization.models.User;
 import com.userservice.authorization.repositories.UserRepository;
-import com.userservice.authorization.security.models.MyGrantedAuthority;
-import com.userservice.authorization.security.models.MyUserDetails;
-import jakarta.transaction.Transactional;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,8 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-//@Service
-@Service("userDetailsService")
+@Service
 public class MyUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
@@ -31,25 +26,28 @@ public class MyUserDetailsService implements UserDetailsService {
 
         User user = userOptional.get();
 
-//        return new org.springframework.security.core.userdetails.User(
-//                user.getUsername(),
-//                user.getPassword(),
-//                user.isActive(),
-//                user.isAccountNonExpired(),
-//                user.isCredentialsNonExpired(),
-//                user.isAccountNonLocked(),
-//                getGrantedAuthorities(user.getRoles())
-//        );
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .roles(getGrantedAuthorities(user.getRoles()))
+                .accountExpired(user.isAccountExpired())
+                .accountLocked(user.isAccountLocked())
+                .credentialsExpired(user.isCredentialsExpired())
+                .disabled(user.isActive())
+                .build();
 
-        return new MyUserDetails(user);
+        return userDetails;
     }
 
-//    private Collection<? extends GrantedAuthority> getGrantedAuthorities(Set<Role> roles) {
-//        List<MyGrantedAuthority> list = new ArrayList<>();
-//
-//        for(Role role : roles)
-//            list.add(new MyGrantedAuthority(role));
-//
-//        return list;
-//    }
+    private String[] getGrantedAuthorities(Set<Role> roles) {
+        String[] roleArray = new String[roles.size()];
+        int i = 0;
+
+        for(Role role : roles) {
+            roleArray[i] = role.getRole();
+            i++;
+        }
+
+        return roleArray;
+    }
 }
