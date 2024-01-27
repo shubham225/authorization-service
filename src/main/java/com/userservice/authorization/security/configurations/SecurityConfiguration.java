@@ -22,6 +22,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
@@ -49,7 +50,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
             throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+        http
+                .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults());	// Enable OpenID Connect 1.0
         http
                 // Redirect to the login page when not authenticated from the
@@ -70,58 +72,22 @@ public class SecurityConfiguration {
             throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/V1/user/signup").permitAll()
+                        .requestMatchers("/api/V1/users/signup").permitAll()
+                        .requestMatchers("/api/V1/clients/register").hasAuthority("SCOPE_client.write")
                         .anyRequest().authenticated()
                 )
+                // If i add 'oauth2ResourceServer' in SecurityFilterChain order(1) spring gives access denied for every request.
+                // Accept access tokens for User Info and/or Client Registration
                 .oauth2ResourceServer((resourceServer) -> resourceServer
                         .jwt(Customizer.withDefaults()))
                 .csrf().disable()
                 .cors().disable()
-                // If added in SecurityFilterChain order 1 system will give access denied.
-                // Accept access tokens for User Info and/or Client Registration
                 // Form login handles the redirect to the login page from the
                 // authorization server filter chain
                 .formLogin(Customizer.withDefaults());
 
         return http.build();
     }
-
-/*
-    // This is replaced with UserDetailsService in security.services
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.builder()
-                .username("user")
-                .password(bCryptPasswordEncoder.encode("password"))
-                .roles("USER")
-                .build();
-
-        return new CustomUserDetailsService();
-    }
-*/
-
-/*
-    // This is replaced with JpaRegisteredClientRepository in security.repository
-    @Bean
-    public RegisteredClientRepository registeredClientRepository() {
-        RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("myclient")
-                .clientSecret(bCryptPasswordEncoder.encode("secret"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .redirectUri("http://127.0.0.1:8080/login/oauth2/code/oidc-client")
-                .redirectUri("https://oauth.pstmn.io/v1/callback")
-                .postLogoutRedirectUri("http://127.0.0.1:8080/")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-                .build();
-
-        return new InMemoryRegisteredClientRepository(oidcClient);
-    }
-*/
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
@@ -156,7 +122,9 @@ public class SecurityConfiguration {
 
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().build();
+        return AuthorizationServerSettings.builder()
+                .oidcClientRegistrationEndpoint("api/V1/clients/register")
+                .build();
     }
 
     @Bean
@@ -166,23 +134,27 @@ public class SecurityConfiguration {
                 context.getClaims().claims((claims) -> {
                     // TODO : Getting null user object this needs to be fixed, from MyUserDetails no arg constructor
                     // Get the User Details Object
-                    org.springframework.security.core.userdetails.User userDetails = getMyUserDetailsFromAuthorizations(
-                                                    Objects.requireNonNull(context.getAuthorization()));
+                    try {
+                        UserDetails userDetails = getMyUserDetailsFromAuthorizations(
+                                Objects.requireNonNull(context.getAuthorization()));
 
-                    Set<String> roles = AuthorityUtils.authorityListToSet(userDetails.getAuthorities())
-                            .stream()
-                            .map(c -> c.replaceFirst("^ROLE_", ""))
-                            .collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
-                    claims.put("roles", roles);
+                        Set<String> roles = AuthorityUtils.authorityListToSet(userDetails.getAuthorities())
+                                .stream()
+                                .map(c -> c.replaceFirst("^ROLE_", ""))
+                                .collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
+                        claims.put("roles", roles);
+                    }catch (NullPointerException e) {
+                        System.out.println("NullPointerException : " + e.getMessage());
+                    }
                 });
             }
         };
     }
 
-    private org.springframework.security.core.userdetails.User getMyUserDetailsFromAuthorizations(OAuth2Authorization authorization) {
+    private UserDetails getMyUserDetailsFromAuthorizations(OAuth2Authorization authorization) {
         Map<String, Object> authorizations = authorization.getAttributes();
         UsernamePasswordAuthenticationToken usernamePasswdAuthToken =
                 (UsernamePasswordAuthenticationToken) authorizations.get("java.security.Principal");
-        return (org.springframework.security.core.userdetails.User) usernamePasswdAuthToken.getPrincipal();
+        return (UserDetails) usernamePasswdAuthToken.getPrincipal();
     }
 }

@@ -3,6 +3,7 @@ package com.userservice.authorization.security.services;
 import com.userservice.authorization.models.Role;
 import com.userservice.authorization.models.User;
 import com.userservice.authorization.repositories.UserRepository;
+import com.userservice.authorization.security.models.MyUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,10 +34,14 @@ public class MyUserDetailsService implements UserDetailsService {
                 .accountExpired(user.isAccountExpired())
                 .accountLocked(user.isAccountLocked())
                 .credentialsExpired(user.isCredentialsExpired())
-                .disabled(user.isActive())
+                .disabled(!user.isActive())
                 .build();
 
         return userDetails;
+
+        // commented because of the 'Cannot invoke "com.userservice.authorization.models.User.getPassword()" because "this.user" is null' error with Authorization Code flow
+        // TODO : Find out the cause of the error, mostly because of json serialization create bean with default constructor
+//        return new MyUserDetails(user);
     }
 
     private String[] getGrantedAuthorities(Set<Role> roles) {

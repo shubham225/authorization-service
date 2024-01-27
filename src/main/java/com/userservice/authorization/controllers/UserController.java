@@ -3,15 +3,15 @@ package com.userservice.authorization.controllers;
 import com.userservice.authorization.dtos.UserDto;
 import com.userservice.authorization.dtos.UserRequestDto;
 import com.userservice.authorization.models.User;
-import com.userservice.authorization.services.UserService;
+import com.userservice.authorization.services.IUserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/V1/user")
+@RequestMapping("api/V1/users")
 public class UserController {
-    private UserService userService;
+    private IUserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(IUserService userService) {
         this.userService = userService;
     }
 
