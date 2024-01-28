@@ -55,15 +55,27 @@ Follow these steps to deploy the application in a production environment:
 ## API Endpoints
 
 Here are some of the key API endpoints provided by the OAuth2 authorization service:
-### Custom Endpoints
+### Registration Endpoints
 - **`/api/V1/users/signup`:** Register a new user for accessing protected resources.
 - **`/api/V1/clients/register`:** Register a new client application for OAuth2 authorization.
 
-### Standard Endpoints
-- **`/oauth2/token`:** Exchange authorization code for access and refresh tokens.
-- **`/oauth2/authorize`:** Initiates the OAuth2 authorization process.
+### Discovery Endpoints
+- **`/.well-known/oauth-authorization-server`:** Provides information about the OAuth2 Authorization Server, including its capabilities and supported endpoints.
+- **`/.well-known/openid-configuration`:** Publishes configuration information, including endpoints and supported features, for clients using OpenID Connect.
 
-Refer to the [API Documentation](./docs/DOCUMENTATION.md) for a complete list of endpoints and their usage.
+### Authorization Endpoints
+- **`/oauth2/authorize`:** Authorization endpoint for initiating the OAuth2 authorization process.
+- **`/oauth2/device_authorization`:** Endpoint for device authorization flow, allowing devices with limited input capabilities to obtain OAuth2 tokens.
+- **`/oauth2/token`:** Token endpoint for obtaining OAuth2 access tokens and refresh tokens.
+- **`/oauth2/jwks`:** JSON Web Key Set (JWKS) endpoint providing public keys for validating JWTs issued by the Authorization Server.
+- **`/oauth2/revoke`:** Endpoint for revoking OAuth2 tokens.
+- **`/oauth2/introspect`:** Token introspection endpoint for checking the validity and details of an OAuth2 token.
+
+### Other Endpoints
+- **`/actuator/health`:** Exposes the health status of the application
+- **`/actuator/info`:** Provides general information about the application.
+
+Refer to the [API Documentation](./docs/DOCUMENTATION.md) for a complete list of endpoints and their usage. 
 
 ## License
 
