@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.authenticator</groupId>
-	<artifactId>userservice</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>authorization-server</artifactId>
+	<version>0.0.1</version>
 	<name>authorization-service</name>
-	<description>Authorization server for user management</description>
+	<description>OAuth2 authorization server with client registration and user management</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
