@@ -1,3 +1,6 @@
+-- Flyway Init migration V1 - Create tables Role, User and User_Roles
+-- SQL script generated with DBeaver
+
 CREATE TABLE `role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `role` varchar(255) NOT NULL,

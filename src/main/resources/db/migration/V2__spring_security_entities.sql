@@ -1,3 +1,6 @@
+-- Flyway Init migration V2 - Create tables Client, Authorization and Authorization_Consent for spring security entities.
+-- SQL script generated with DBeaver
+
 CREATE TABLE `client` (
   `id` varchar(255) NOT NULL,
   `authorization_grant_types` varchar(1000) DEFAULT NULL,
