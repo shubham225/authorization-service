@@ -3,7 +3,6 @@ package com.userservice.authorization.security.services;
 import com.userservice.authorization.models.Role;
 import com.userservice.authorization.models.User;
 import com.userservice.authorization.repositories.UserRepository;
-import com.userservice.authorization.security.models.MyUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,7 +12,7 @@ import java.util.*;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public MyUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -23,7 +22,7 @@ public class MyUserDetailsService implements UserDetailsService {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if(userOptional.isEmpty())
-            throw new UsernameNotFoundException("User doesn't exists");
+            throw new UsernameNotFoundException("User '"+ username + "' doesn't exists");
 
         User user = userOptional.get();
 

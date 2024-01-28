@@ -1,18 +1,24 @@
 package com.userservice.authorization.services;
 
-import com.userservice.authorization.dtos.UserDto;
+import com.userservice.authorization.dtos.UserResponseDto;
 import com.userservice.authorization.dtos.UserRequestDto;
-import com.userservice.authorization.exceptions.NotFoundException;
+import com.userservice.authorization.exceptions.IllegalValueException;
+import com.userservice.authorization.exceptions.NullUserRolesException;
+import com.userservice.authorization.exceptions.UserAlreadyExistsException;
+import com.userservice.authorization.models.Role;
 import com.userservice.authorization.models.User;
 import com.userservice.authorization.repositories.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
 import java.util.Optional;
 
 @Service
 public class UserService implements IUserService{
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -24,23 +30,54 @@ public class UserService implements IUserService{
         Optional<User> userOptional = userRepository.findById(id);
 
         if(userOptional.isEmpty())
-            throw new NotFoundException("User " + id + " do not exists");
+            throw new UsernameNotFoundException("User with id '"+ id + "' doesn't exists");
 
         return userOptional.get();
     }
 
-    public UserDto addUser(UserRequestDto user) {
-        User userNew = new User();
-        userNew.setUsername(user.getUsername());
-        userNew.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userNew.setActive(false);
+    public UserResponseDto addUser(UserRequestDto user) throws Exception {
 
-        userRepository.save(userNew);
+        validateUserDetails(user);
 
-        UserDto userDto = new UserDto();
-        userDto.setUsername(userNew.getUsername());
-        userDto.setIsActive(false);
+        User newUser = new User();
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        newUser.setActive(false);
 
-        return userDto;
+//        if(user.getRoles() != null) {
+//            for(String role : user.getRoles()) {
+//                newUser.getRoles().add(new Role(role));
+//            }
+//        }else {
+//            throw new NullUserRolesException("User roles should not be null");
+//        }
+
+        userRepository.save(newUser);
+
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setUsername(newUser.getUsername());
+        userResponseDto.setIsActive(false);
+//        userResponseDto.setRoles(user.getRoles());
+
+        return userResponseDto;
+    }
+
+    private void validateUserDetails(UserRequestDto user) throws Exception{
+        Assert.notNull(user, "request should have value.");
+        Assert.notNull(user.getUsername(), "username should be present in the request");
+        Assert.notNull(user.getPassword(), "password should be present in the request");
+        Assert.hasText(user.getUsername(), "username cannot be blank.");
+        Assert.hasText(user.getPassword(), "password cannot be blank.");
+
+        if (user.getPassword().length() < 8) {
+            throw new IllegalValueException("password must be at least 8 characters long.");
+        }
+
+        Optional<User> userOptional = userRepository.findByUsername(user.getUsername());
+
+        if(userOptional.isPresent()) {
+            throw new UserAlreadyExistsException("username '" + user.getUsername() + "' already exists, user different username.");
+        }
+
     }
 }

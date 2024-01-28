@@ -5,6 +5,6 @@ import com.userservice.authorization.dtos.ClientRegistrationResponseDto;
 import com.userservice.authorization.security.models.Client;
 
 public interface IClientService {
-    public ClientRegistrationResponseDto registerClient(ClientRegistrationRequestDto client);
+    public ClientRegistrationResponseDto registerClient(ClientRegistrationRequestDto client) throws Exception;
     public Client getClientByName(String clientName);
 }

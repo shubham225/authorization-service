@@ -11,4 +11,12 @@ import lombok.Setter;
 @JsonSerialize(as = Role.class)
 public class Role extends BaseModel{
     private String role;
+
+    public Role() {
+        role = "";
+    }
+
+    public Role(String role) {
+        this.role = role;
+    }
 }

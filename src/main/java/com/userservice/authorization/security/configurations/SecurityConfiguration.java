@@ -13,6 +13,9 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import com.userservice.authorization.security.configurations.exceptionhandler.MyAccessDeniedHandler;
+import com.userservice.authorization.security.configurations.exceptionhandler.MyAuthenticationEntryPoint;
+import com.userservice.authorization.security.configurations.exceptionhandler.MyBearerTokenAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -21,6 +24,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,10 +43,16 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final MyAccessDeniedHandler myAccessDeniedHandler;
+    private final MyAuthenticationEntryPoint myAuthenticationEntryPoint;
+    private final MyBearerTokenAuthenticationEntryPoint myBearerTokenAuthenticationEntryPoint;
 
-    SecurityConfiguration(BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    SecurityConfiguration(MyAccessDeniedHandler                 myAccessDeniedHandler,
+                          MyAuthenticationEntryPoint            myAuthenticationEntryPoint,
+                          MyBearerTokenAuthenticationEntryPoint myBearerTokenAuthenticationEntryPoint) {
+        this.myAccessDeniedHandler = myAccessDeniedHandler;
+        this.myAuthenticationEntryPoint = myAuthenticationEntryPoint;
+        this.myBearerTokenAuthenticationEntryPoint = myBearerTokenAuthenticationEntryPoint;
     }
 
     @Bean
@@ -76,12 +86,17 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/V1/clients/register").hasAuthority("SCOPE_client.write")
                         .anyRequest().authenticated()
                 )
-                // If i add 'oauth2ResourceServer' in SecurityFilterChain order(1) spring gives access denied for every request.
-                // Accept access tokens for User Info and/or Client Registration
-                .oauth2ResourceServer((resourceServer) -> resourceServer
-                        .jwt(Customizer.withDefaults()))
-                .csrf().disable()
-                .cors().disable()
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
+                // If I add 'oauth2ResourceServer' in SecurityFilterChain order(1) spring gives
+                // access denied for every request.
+                .oauth2ResourceServer((resourceServer) -> resourceServer    // Accept access tokens for User Info and/or Client Registration
+                        .jwt(Customizer.withDefaults())
+                        // This code is added to handle entry point exceptions by ControllerAdvice,
+                        // else these exceptions didn't reach controllers.
+                        .authenticationEntryPoint(this.myBearerTokenAuthenticationEntryPoint)
+                        .accessDeniedHandler(this.myAccessDeniedHandler))
+                .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.myAuthenticationEntryPoint))
                 // Form login handles the redirect to the login page from the
                 // authorization server filter chain
                 .formLogin(Customizer.withDefaults());
@@ -132,19 +147,21 @@ public class SecurityConfiguration {
         return (context) -> {
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 context.getClaims().claims((claims) -> {
-                    // TODO : Getting null user object this needs to be fixed, from MyUserDetails no arg constructor
-                    // Get the User Details Object
                     try {
+                        // Get the User Details Object
                         UserDetails userDetails = getMyUserDetailsFromAuthorizations(
-                                Objects.requireNonNull(context.getAuthorization()));
+                                    Objects.requireNonNull(context.getAuthorization()));
 
-                        Set<String> roles = AuthorityUtils.authorityListToSet(userDetails.getAuthorities())
-                                .stream()
-                                .map(c -> c.replaceFirst("^ROLE_", ""))
-                                .collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
-                        claims.put("roles", roles);
-                    }catch (NullPointerException e) {
-                        System.out.println("NullPointerException : " + e.getMessage());
+                        // In case other than Authorization Code User details can be null.
+                        if (userDetails != null) {
+                            Set<String> roles = AuthorityUtils.authorityListToSet(userDetails.getAuthorities())
+                                    .stream()
+                                    .map(c -> c.replaceFirst("^ROLE_", ""))
+                                    .collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
+                            claims.put("roles", roles);
+                        }
+                    }catch (Exception e) {
+                        System.out.println("Exception Reading UserData : " + e.toString());
                     }
                 });
             }
