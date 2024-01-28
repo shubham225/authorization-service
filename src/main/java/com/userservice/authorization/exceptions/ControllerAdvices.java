@@ -22,13 +22,27 @@ public class ControllerAdvices {
         return new ResponseEntity<ErrorResponseDto>(error, status);
     }
 
-    @ExceptionHandler(  {
-                        AccessDeniedException.class,
-                        InvalidBearerTokenException.class,
-                        InsufficientAuthenticationException.class,
-                        InvalidBearerTokenException.class
-                        } )
-    public ResponseEntity<ErrorResponseDto> handleAccessDeniedException(Exception exception, HttpServletRequest request) {
+    @ExceptionHandler({
+            ClientAlreadyExistsException.class,
+            IllegalValueException.class,
+            UserAlreadyExistsException.class
+    })
+    public ResponseEntity<ErrorResponseDto> handleValidationExceptions(Exception exception, HttpServletRequest request) {
+        ErrorResponseDto error = new ErrorResponseDto(exception, request);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        error.setStatus(status.toString());
+
+        return new ResponseEntity<ErrorResponseDto>(error, status);
+    }
+
+    @ExceptionHandler({
+            AccessDeniedException.class,
+            InvalidBearerTokenException.class,
+            InsufficientAuthenticationException.class,
+            InvalidBearerTokenException.class
+    })
+    public ResponseEntity<ErrorResponseDto> handleUnauthorizedAccessException(Exception exception, HttpServletRequest request) {
         ErrorResponseDto error = new ErrorResponseDto(exception, request);
         HttpStatus status = HttpStatus.UNAUTHORIZED;
 

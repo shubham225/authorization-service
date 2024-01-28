@@ -1,9 +1,7 @@
 package com.userservice.authorization.models;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +19,15 @@ public class User extends BaseModel {
     private boolean isCredentialsExpired;
     private boolean isAccountLocked;
     private boolean isAccountExpired;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.EAGER
+    )
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private Set<Role> roles;
 
     //Add extra user info if needed

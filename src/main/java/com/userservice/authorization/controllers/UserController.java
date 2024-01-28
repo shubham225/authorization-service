@@ -28,9 +28,9 @@ public class UserController {
 
         userResponseDto.setUsername(user.getUsername());
         userResponseDto.setIsActive(user.isActive());
-//        for(Role role : user.getRoles()) {
-//            userResponseDto.getRoles().add(role.getRole());
-//        }
+        for(Role role : user.getRoles()) {
+            userResponseDto.getRoles().add(role.getRole());
+        }
 
         return userResponseDto;
     }

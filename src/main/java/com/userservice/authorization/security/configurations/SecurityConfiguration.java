@@ -83,6 +83,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/api/V1/users/signup").permitAll()
+                        .requestMatchers("/api/V1/users/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
                         .requestMatchers("/api/V1/clients/register").hasAuthority("SCOPE_client.write")
                         .anyRequest().authenticated()
                 )

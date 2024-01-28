@@ -16,10 +16,10 @@ import java.util.UUID;
 
 @SpringBootTest
 class AuthorizationServiceApplicationTests {
-	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
-	@Autowired
-	RegisteredClientRepository clientRepository;
+//	@Autowired
+//	BCryptPasswordEncoder bCryptPasswordEncoder;
+//	@Autowired
+//	RegisteredClientRepository clientRepository;
 
 	@Test
 	void contextLoads() {
@@ -39,5 +39,5 @@ class AuthorizationServiceApplicationTests {
 //
 //		clientRepository.save(registrarClient);
 //	}
-//
-//}
+
+}

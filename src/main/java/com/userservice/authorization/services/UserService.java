@@ -7,6 +7,7 @@ import com.userservice.authorization.exceptions.NullUserRolesException;
 import com.userservice.authorization.exceptions.UserAlreadyExistsException;
 import com.userservice.authorization.models.Role;
 import com.userservice.authorization.models.User;
+import com.userservice.authorization.repositories.RoleRepository;
 import com.userservice.authorization.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,11 +19,15 @@ import java.util.Optional;
 @Service
 public class UserService implements IUserService{
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository,
+                       RoleRepository roleRepository,
+                       BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     @Override
@@ -44,20 +49,25 @@ public class UserService implements IUserService{
         newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         newUser.setActive(false);
 
-//        if(user.getRoles() != null) {
-//            for(String role : user.getRoles()) {
-//                newUser.getRoles().add(new Role(role));
-//            }
-//        }else {
-//            throw new NullUserRolesException("User roles should not be null");
-//        }
+        if(user.getRoles() != null) {
+            for(String role : user.getRoles()) {
+                Optional<Role> optionalRole = roleRepository.findByRole(role);
+
+                if(optionalRole.isEmpty())
+                    newUser.getRoles().add(new Role(role));
+                else
+                    newUser.getRoles().add(optionalRole.get());
+            }
+        }else {
+            throw new NullUserRolesException("User roles should not be null");
+        }
 
         userRepository.save(newUser);
 
         UserResponseDto userResponseDto = new UserResponseDto();
         userResponseDto.setUsername(newUser.getUsername());
         userResponseDto.setIsActive(false);
-//        userResponseDto.setRoles(user.getRoles());
+        userResponseDto.setRoles(user.getRoles());
 
         return userResponseDto;
     }

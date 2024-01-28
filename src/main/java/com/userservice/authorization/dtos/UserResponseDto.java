@@ -13,9 +13,9 @@ public class UserResponseDto {
     private String username;
     @JsonProperty( value = "is_active")
     private Boolean isActive;
-//    private Set<String> roles;
+    private Set<String> roles;
 
     public UserResponseDto() {
-//        roles = new HashSet<>();
+        roles = new HashSet<>();
     }
 }
