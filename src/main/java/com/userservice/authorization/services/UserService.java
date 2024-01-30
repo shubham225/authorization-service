@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,6 +39,11 @@ public class UserService implements IUserService{
             throw new UsernameNotFoundException("User with id '"+ id + "' doesn't exists");
 
         return userOptional.get();
+    }
+
+    @Override
+    public List<User> getAllUser() {
+        return userRepository.findAll();
     }
 
     public UserResponseDto addUser(UserRequestDto user) throws Exception {

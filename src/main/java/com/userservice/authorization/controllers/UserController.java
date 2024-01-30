@@ -7,6 +7,9 @@ import com.userservice.authorization.models.User;
 import com.userservice.authorization.services.IUserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("api/V1/users")
 public class UserController {
@@ -14,6 +17,28 @@ public class UserController {
 
     public UserController(IUserService userService) {
         this.userService = userService;
+    }
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            path = "/"
+    )
+    public List<UserResponseDto> getAllUsers() {
+        List<User> users = userService.getAllUser();
+        List<UserResponseDto> userResponse = new ArrayList<>();
+
+        for(User user : users) {
+            UserResponseDto userResponseDto = new UserResponseDto();
+
+            userResponseDto.setUsername(user.getUsername());
+            userResponseDto.setIsActive(user.isActive());
+            for (Role role : user.getRoles()) {
+                userResponseDto.getRoles().add(role.getRole());
+            }
+            userResponse.add(userResponseDto);
+        }
+
+        return userResponse;
     }
 
     @RequestMapping(
