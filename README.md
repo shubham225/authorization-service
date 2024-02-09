@@ -51,7 +51,7 @@ Follow these steps to deploy the application in a production environment:
 
 To properly configure and run this project, you will need to set up the following environment variables:
 
-1. **AUTH_DATASOURCE_URL**: This variable should be set to the URL of your server datasource. For example, if you're using a MySQL/MariaDB database for service, the URL might look like `jdbc:mariadb://<host>:3306/<database>`.
+1. **AUTH_DATASOURCE_URL**: This variable should be set to the URL of your server datasource. For example, if you're using a MySQL/MariaDB database for service, the URL might look like `jdbc:mariadb://localhost:3306/your_database_name`.
 
 2. **AUTH_DB_USER**: Set this variable to the username used to access your database.
 
