@@ -9,6 +9,7 @@ Before you begin, ensure you have met the following requirements:
 - **Java:** Version 17 or later. You can download it from [OpenJDK](https://openjdk.java.net/).
 - **Spring Boot:** Version 3.2.1. Check the [official Spring Boot website](https://spring.io/projects/spring-boot) for details.
 - **Maven:** The project uses Maven as the build system. Install Maven by following the instructions [here](https://maven.apache.org/install.html).
+- **Database**: Set up a MySQL or MariaDB database server. You can install MySQL or MariaDB server locally on your development machine or use a cloud-based database service. You can download MySQL from the [official MySQL website](https://dev.mysql.com/downloads/) or MariaDB from the [official MariaDB website](https://mariadb.org/download/).
 
 ## Getting Started
 
@@ -45,6 +46,20 @@ Follow these steps to deploy the application in a production environment:
     ```bash
    java -jar /path/to/deployment/authorization-server-0.0.1.jar
 5. The application will be deployed and accessible on the specified port. Make sure to configure environment-specific settings and secure any sensitive information.
+
+## Environment Variables
+
+To properly configure and run this project, you will need to set up the following environment variables:
+
+1. **AUTH_DATASOURCE_URL**: This variable should be set to the URL of your server datasource. For example, if you're using a MySQL/MariaDB database for service, the URL might look like `jdbc:mariadb://<host>:3306/<database>`.
+
+2. **AUTH_DB_USER**: Set this variable to the username used to access your database.
+
+3. **AUTH_DB_PASSWORD**: Set this variable to the password used to access your database.
+
+4. **AUTH_DB_DRIVER**: Specify the driver class for your database. For example, if you're using a MySQL/MariaDB database, the class name might look like `org.mariadb.jdbc.Driver`.
+
+Make sure to set these environment variables either directly in your development environment or using a configuration file such as `application.properties` or `application.yml` for local development. Additionally, when deploying your Spring Boot application, you can configure these variables through your deployment environment settings.
 
 ## Features
 
