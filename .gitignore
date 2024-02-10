@@ -1,5 +1,6 @@
 HELP.md
 Notes.txt
+.env
 
 target/
 !.mvn/wrapper/maven-wrapper.jar

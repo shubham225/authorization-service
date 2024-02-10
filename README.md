@@ -51,13 +51,11 @@ Follow these steps to deploy the application in a production environment:
 
 To properly configure and run this project, you will need to set up the following environment variables:
 
-1. **AUTH_DATASOURCE_URL**: This variable should be set to the URL of your server datasource. For example, if you're using a MySQL/MariaDB database for service, the URL might look like `jdbc:mariadb://localhost:3306/your_database_name`.
+- **AUTH_DATASOURCE_URL**: This variable should be set to the URL of your server datasource. For example, if you're using a MySQL/MariaDB database for service, the URL might look like `jdbc:mariadb://localhost:3306/your_database_name`.
 
-2. **AUTH_DB_USER**: Set this variable to the username used to access your database.
+- **AUTH_DB_USER**: Set this variable to the username used to access your database.
 
-3. **AUTH_DB_PASSWORD**: Set this variable to the password used to access your database.
-
-4. **AUTH_DB_DRIVER**: Specify the driver class for your database. For example, if you're using a MySQL/MariaDB database, the class name might look like `org.mariadb.jdbc.Driver`.
+- **AUTH_DB_PASSWORD**: Set this variable to the password used to access your database.
 
 Make sure to set these environment variables either directly in your development environment or using a configuration file such as `application.properties` or `application.yml` for local development. Additionally, when deploying your Spring Boot application, you can configure these variables through your deployment environment settings.
 
