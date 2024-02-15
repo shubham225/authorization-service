@@ -46,13 +46,16 @@ public class SecurityConfiguration {
     private final MyAccessDeniedHandler myAccessDeniedHandler;
     private final MyAuthenticationEntryPoint myAuthenticationEntryPoint;
     private final MyBearerTokenAuthenticationEntryPoint myBearerTokenAuthenticationEntryPoint;
+    private final RsaKeyProperties rsaKeys;
 
     SecurityConfiguration(MyAccessDeniedHandler                 myAccessDeniedHandler,
                           MyAuthenticationEntryPoint            myAuthenticationEntryPoint,
-                          MyBearerTokenAuthenticationEntryPoint myBearerTokenAuthenticationEntryPoint) {
+                          MyBearerTokenAuthenticationEntryPoint myBearerTokenAuthenticationEntryPoint,
+                          RsaKeyProperties                      rsaKeys) {
         this.myAccessDeniedHandler = myAccessDeniedHandler;
         this.myAuthenticationEntryPoint = myAuthenticationEntryPoint;
         this.myBearerTokenAuthenticationEntryPoint = myBearerTokenAuthenticationEntryPoint;
+        this.rsaKeys = rsaKeys;
     }
 
     @Bean
@@ -108,12 +111,13 @@ public class SecurityConfiguration {
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
-        KeyPair keyPair = generateRsaKey();
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+        RSAPublicKey publicKey = rsaKeys.getPublicKey();
+        RSAPrivateKey privateKey = rsaKeys.getPrivateKey();
+        String keyID = rsaKeys.getKeyID();
+
         RSAKey rsaKey = new RSAKey.Builder(publicKey)
                 .privateKey(privateKey)
-                .keyID(UUID.randomUUID().toString())
+                .keyID(keyID)
                 .build();
         JWKSet jwkSet = new JWKSet(rsaKey);
         return new ImmutableJWKSet<>(jwkSet);

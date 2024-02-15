@@ -81,7 +81,6 @@ Here are some of the key API endpoints provided by the OAuth2 authorization serv
 - **`/oauth2/device_authorization`:** Endpoint for device authorization flow, allowing devices with limited input capabilities to obtain OAuth2 tokens.
 - **`/oauth2/token`:** Token endpoint for obtaining OAuth2 access tokens and refresh tokens.
 - **`/oauth2/jwks`:** JSON Web Key Set (JWKS) endpoint providing public keys for validating JWTs issued by the Authorization Server.
-- **`/oauth2/revoke`:** Endpoint for revoking OAuth2 tokens.
 - **`/oauth2/introspect`:** Token introspection endpoint for checking the validity and details of an OAuth2 token.
 
 ### Other Endpoints
