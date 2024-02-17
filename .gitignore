@@ -1,6 +1,7 @@
 HELP.md
 Notes.txt
 .env
+src/main/resources/certificates/**
 
 target/
 !.mvn/wrapper/maven-wrapper.jar

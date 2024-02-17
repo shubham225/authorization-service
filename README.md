@@ -89,6 +89,24 @@ Here are some of the key API endpoints provided by the OAuth2 authorization serv
 
 Refer to the [API Documentation](./docs/DOCUMENTATION.md) for a complete list of endpoints and their usage. 
 
+## Generating RSA Certificates
+Before getting started, ensure you have OpenSSL installed on your system. If not, you can download and install it from [OpenSSL website](https://www.openssl.org/).
+1. Navigate to the certificates directory :
+   ```bash
+   cd src/main/resources/certificates/
+2. Run the following command to generate a 2048-bit RSA private key:
+   ```bash
+   openssl genrsa -out keypair.pem 2048
+3. Next, extract the public key from the private key generated in the previous step using the following command:
+    ```bash
+   openssl rsa -in keypair.pem -pubout -out public.pem
+
+4. For compatibility and ease of use, convert the private key to PKCS#8 format using the following command:
+    ```bash
+   openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
+
+5. Above commands will create three files in the `certificates` directory: `keypair.pem`, `public.pem`, and `private.pem`. We don't need 'keypair.pem'; this file can be deleted. The other two files will serve as the private and public keys for signing and validating JWT
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE.md).
