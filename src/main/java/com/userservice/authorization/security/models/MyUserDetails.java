@@ -2,8 +2,8 @@ package com.userservice.authorization.security.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.userservice.authorization.models.Role;
-import com.userservice.authorization.models.User;
+import com.userservice.authorization.model.Role;
+import com.userservice.authorization.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

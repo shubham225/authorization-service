@@ -1,6 +1,6 @@
-package com.userservice.authorization.controllers;
+package com.userservice.authorization.controller;
 
-import com.userservice.authorization.dtos.ErrorResponseDto;
+import com.userservice.authorization.dto.ErrorResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;

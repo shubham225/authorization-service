@@ -1,15 +1,15 @@
-package com.userservice.authorization.controllers;
+package com.userservice.authorization.controller;
 
-import com.userservice.authorization.dtos.ClientRegistrationRequestDto;
-import com.userservice.authorization.dtos.ClientRegistrationResponseDto;
-import com.userservice.authorization.services.IClientService;
+import com.userservice.authorization.dto.ClientRegistrationRequestDto;
+import com.userservice.authorization.dto.ClientRegistrationResponseDto;
+import com.userservice.authorization.service.IClientService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/V1/clients")
+@RequestMapping("api/V1/client")
 public class ClientController {
     private final IClientService clientService;
 

@@ -1,14 +1,14 @@
-package com.userservice.authorization.services;
+package com.userservice.authorization.service;
 
-import com.userservice.authorization.dtos.UserResponseDto;
-import com.userservice.authorization.dtos.UserRequestDto;
-import com.userservice.authorization.exceptions.IllegalValueException;
-import com.userservice.authorization.exceptions.NullUserRolesException;
-import com.userservice.authorization.exceptions.UserAlreadyExistsException;
-import com.userservice.authorization.models.Role;
-import com.userservice.authorization.models.User;
-import com.userservice.authorization.repositories.RoleRepository;
-import com.userservice.authorization.repositories.UserRepository;
+import com.userservice.authorization.dto.UserAddResponseDto;
+import com.userservice.authorization.dto.UserAddRequestDto;
+import com.userservice.authorization.exception.IllegalValueException;
+import com.userservice.authorization.exception.NullUserRolesException;
+import com.userservice.authorization.exception.UserAlreadyExistsException;
+import com.userservice.authorization.model.Role;
+import com.userservice.authorization.model.User;
+import com.userservice.authorization.repository.RoleRepository;
+import com.userservice.authorization.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ public class UserService implements IUserService{
         return userRepository.findAll();
     }
 
-    public UserResponseDto addUser(UserRequestDto user) throws Exception {
+    public UserAddResponseDto addUser(UserAddRequestDto user) throws Exception {
 
         validateUserDetails(user);
 
@@ -70,15 +70,15 @@ public class UserService implements IUserService{
 
         userRepository.save(newUser);
 
-        UserResponseDto userResponseDto = new UserResponseDto();
-        userResponseDto.setUsername(newUser.getUsername());
-        userResponseDto.setIsActive(false);
-        userResponseDto.setRoles(user.getRoles());
+        UserAddResponseDto userAddResponseDto = new UserAddResponseDto();
+        userAddResponseDto.setUsername(newUser.getUsername());
+        userAddResponseDto.setIsActive(false);
+        userAddResponseDto.setRoles(user.getRoles());
 
-        return userResponseDto;
+        return userAddResponseDto;
     }
 
-    private void validateUserDetails(UserRequestDto user) throws Exception{
+    private void validateUserDetails(UserAddRequestDto user) throws Exception{
         Assert.notNull(user, "request should have value.");
         Assert.notNull(user.getUsername(), "username should be present in the request");
         Assert.notNull(user.getPassword(), "password should be present in the request");

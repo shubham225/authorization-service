@@ -1,7 +1,22 @@
+# Application Info
+info:
+  application:
+    name: authorization-server
+    description: OAuth2 Authorization Server
+    author: Shubham Shinde
+    version: '@project.version@'
+
 # Server Config
 server:
   port: 9000
-  
+
+# Spring Security Config
+logging:
+  level:
+    org:
+      springframework:
+        security: trace
+
 # Database Config
 spring:
   datasource:
@@ -14,13 +29,6 @@ spring:
       ddl-auto: validate
     show-sql: true
   
-# Spring Security Config
-logging:
-  level:
-    org:
-      springframework:
-        security: trace
-  
 # Actuator Endpoints
 management:
   endpoints:
@@ -28,9 +36,12 @@ management:
     web:
       exposure:
         include: health, info
+  info:
+    env:
+      enabled: true
 
 #RSA Keys
 rsa:
-  private-key: classpath:certificates/private.pem
-  public-key: classpath:certificates/public.pem
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
   key-id: ${JWT_KEY_ID:70d3f8a1-8d6e-42c2-82ce-65691a88f7e5}

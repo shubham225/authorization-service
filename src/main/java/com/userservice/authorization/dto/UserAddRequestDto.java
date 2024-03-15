@@ -1,6 +1,5 @@
-package com.userservice.authorization.dtos;
+package com.userservice.authorization.dto;
 
-import com.userservice.authorization.models.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +7,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class UserRequestDto {
+public class UserAddRequestDto {
     private String  username;
     private String  password;
     private Set<String> roles;

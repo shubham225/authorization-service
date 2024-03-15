@@ -1,4 +1,4 @@
-package com.userservice.authorization.dtos;
+package com.userservice.authorization.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -9,13 +9,13 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class UserResponseDto {
+public class UserAddResponseDto {
     private String username;
     @JsonProperty( value = "is_active")
     private Boolean isActive;
     private Set<String> roles;
 
-    public UserResponseDto() {
+    public UserAddResponseDto() {
         roles = new HashSet<>();
     }
 }

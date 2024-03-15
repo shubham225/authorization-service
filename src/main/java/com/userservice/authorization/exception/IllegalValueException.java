@@ -1,4 +1,4 @@
-package com.userservice.authorization.exceptions;
+package com.userservice.authorization.exception;
 
 public class IllegalValueException extends Exception{
     public IllegalValueException(String message) {

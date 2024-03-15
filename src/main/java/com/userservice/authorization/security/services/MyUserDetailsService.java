@@ -1,8 +1,8 @@
 package com.userservice.authorization.security.services;
 
-import com.userservice.authorization.models.Role;
-import com.userservice.authorization.models.User;
-import com.userservice.authorization.repositories.UserRepository;
+import com.userservice.authorization.model.Role;
+import com.userservice.authorization.model.User;
+import com.userservice.authorization.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

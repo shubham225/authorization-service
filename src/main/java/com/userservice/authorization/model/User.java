@@ -1,4 +1,4 @@
-package com.userservice.authorization.models;
+package com.userservice.authorization.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;

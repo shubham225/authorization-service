@@ -1,6 +1,6 @@
-package com.userservice.authorization.repositories;
+package com.userservice.authorization.repository;
 
-import com.userservice.authorization.models.User;
+import com.userservice.authorization.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.userservice.authorization.models;
+package com.userservice.authorization.model;
 
 
 import jakarta.persistence.GeneratedValue;
