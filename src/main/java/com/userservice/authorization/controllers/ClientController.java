@@ -1,8 +1,8 @@
-package com.userservice.authorization.controller;
+package com.userservice.authorization.controllers;
 
-import com.userservice.authorization.dto.ClientRegistrationRequestDto;
-import com.userservice.authorization.dto.ClientRegistrationResponseDto;
-import com.userservice.authorization.service.IClientService;
+import com.userservice.authorization.dtos.ClientRegistrationRequestDto;
+import com.userservice.authorization.dtos.ClientRegistrationResponseDto;
+import com.userservice.authorization.services.IClientService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

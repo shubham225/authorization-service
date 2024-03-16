@@ -1,8 +1,8 @@
-package com.userservice.authorization.service;
+package com.userservice.authorization.services;
 
-import com.userservice.authorization.dto.ClientRegistrationRequestDto;
-import com.userservice.authorization.dto.ClientRegistrationResponseDto;
-import com.userservice.authorization.exception.ClientAlreadyExistsException;
+import com.userservice.authorization.dtos.ClientRegistrationRequestDto;
+import com.userservice.authorization.dtos.ClientRegistrationResponseDto;
+import com.userservice.authorization.exceptions.ClientAlreadyExistsException;
 import com.userservice.authorization.security.models.Client;
 
 import com.userservice.authorization.security.repositories.ClientRepository;

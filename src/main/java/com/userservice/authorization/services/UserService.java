@@ -1,14 +1,14 @@
-package com.userservice.authorization.service;
+package com.userservice.authorization.services;
 
-import com.userservice.authorization.dto.UserAddResponseDto;
-import com.userservice.authorization.dto.UserAddRequestDto;
-import com.userservice.authorization.exception.IllegalValueException;
-import com.userservice.authorization.exception.NullUserRolesException;
-import com.userservice.authorization.exception.UserAlreadyExistsException;
-import com.userservice.authorization.model.Role;
-import com.userservice.authorization.model.User;
-import com.userservice.authorization.repository.RoleRepository;
-import com.userservice.authorization.repository.UserRepository;
+import com.userservice.authorization.dtos.UserAddResponseDto;
+import com.userservice.authorization.dtos.UserAddRequestDto;
+import com.userservice.authorization.exceptions.IllegalValueException;
+import com.userservice.authorization.exceptions.NullUserRolesException;
+import com.userservice.authorization.exceptions.UserAlreadyExistsException;
+import com.userservice.authorization.models.Role;
+import com.userservice.authorization.models.User;
+import com.userservice.authorization.repositories.RoleRepository;
+import com.userservice.authorization.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

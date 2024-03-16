@@ -1,10 +1,10 @@
-package com.userservice.authorization.controller;
+package com.userservice.authorization.controllers;
 
-import com.userservice.authorization.dto.UserAddResponseDto;
-import com.userservice.authorization.dto.UserAddRequestDto;
-import com.userservice.authorization.model.Role;
-import com.userservice.authorization.model.User;
-import com.userservice.authorization.service.IUserService;
+import com.userservice.authorization.dtos.UserAddResponseDto;
+import com.userservice.authorization.dtos.UserAddRequestDto;
+import com.userservice.authorization.models.Role;
+import com.userservice.authorization.models.User;
+import com.userservice.authorization.services.IUserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

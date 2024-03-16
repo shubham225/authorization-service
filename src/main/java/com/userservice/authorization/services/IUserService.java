@@ -1,8 +1,8 @@
-package com.userservice.authorization.service;
+package com.userservice.authorization.services;
 
-import com.userservice.authorization.dto.UserAddResponseDto;
-import com.userservice.authorization.dto.UserAddRequestDto;
-import com.userservice.authorization.model.User;
+import com.userservice.authorization.dtos.UserAddResponseDto;
+import com.userservice.authorization.dtos.UserAddRequestDto;
+import com.userservice.authorization.models.User;
 
 import java.util.List;
 

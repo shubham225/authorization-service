@@ -1,4 +1,4 @@
-package com.userservice.authorization.dto;
+package com.userservice.authorization.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.servlet.http.HttpServletRequest;
