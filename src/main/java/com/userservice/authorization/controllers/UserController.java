@@ -46,8 +46,7 @@ public class UserController {
             path = "/{id}"
     )
     public UserAddResponseDto getUsers(@PathVariable int id) throws Exception {
-        User user = new User();
-        user = userService.getUser(id);
+        User user = userService.getUser(id);
 
         UserAddResponseDto userAddResponseDto = new UserAddResponseDto();
 

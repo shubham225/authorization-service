@@ -166,7 +166,7 @@ public class SecurityConfiguration {
                             claims.put("roles", roles);
                         }
                     }catch (Exception e) {
-                        System.out.println("Exception Reading UserData : " + e.toString());
+                        System.out.println("Error Reading UserData : " + e.toString());
                     }
                 });
             }

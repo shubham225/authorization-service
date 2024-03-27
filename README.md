@@ -105,7 +105,7 @@ Before getting started, ensure you have OpenSSL installed on your system. If not
     ```bash
    openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
 
-5. Above commands will create three files in the `certificates` directory: `keypair.pem`, `public.pem`, and `private.pem`. We don't need 'keypair.pem'; this file can be deleted. The other two files will serve as the private and public keys for signing and validating JWT
+5. Above commands will create three files in the `certificates` directory: `keypair.pem`, `public.pem`, and `private.pem`. We don't need `keypair.pem`; this file can be deleted. The other two files will serve as the private and public keys for signing and validating JWT
 
 ## License
 
