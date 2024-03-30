@@ -24,7 +24,7 @@ public class ErrorResponseDto {
     public ErrorResponseDto(Exception exception, HttpServletRequest request) {
         this.error = exception.getClass().getSimpleName();
         this.message = exception.getMessage();
-        timestamp = new Date();
-        path = request.getRequestURI();
+        this.timestamp = new Date();
+        this.path = request.getRequestURI();
     }
 }
