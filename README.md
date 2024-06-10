@@ -77,8 +77,7 @@ Here are some of the key API endpoints provided by the OAuth2 authorization serv
 - **`GET /.well-known/openid-configuration`:** Publishes configuration information, including endpoints and supported features, for clients using OpenID Connect.
 
 ### Authorization Endpoints
-- **`POST /oauth2/authorize`:** Authorization endpoint for initiating the OAuth2 authorization process.
-- **`POST /oauth2/device_authorization`:** Endpoint for device authorization flow, allowing devices with limited input capabilities to obtain OAuth2 tokens.
+- **`GET /oauth2/authorize`:** Authorization endpoint for initiating the OAuth2 authorization process.
 - **`POST /oauth2/token`:** Token endpoint for obtaining OAuth2 access tokens and refresh tokens.
 - **`GET /oauth2/jwks`:** JSON Web Key Set (JWKS) endpoint providing public keys for validating JWTs issued by the Authorization Server.
 - **`POST /oauth2/introspect`:** Token introspection endpoint for checking the validity and details of an OAuth2 token.
