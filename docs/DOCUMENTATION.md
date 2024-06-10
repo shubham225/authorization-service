@@ -62,7 +62,7 @@ mentioned in the query of the request with `code` as query parameter. this autho
   scope=openid%20profile%20read&
   redirect_uri=https%3A%2F%2Foauth.pstmn.io%2Fv1%2Fcallback'
 
-- **Response: ** User will be redirected to `redirect_url` with `code` as query parameter, url will be as follows:
+- **Response:** User will be redirected to `redirect_url` with `code` as query parameter, url will be as follows:
   ```
   https://oauth.pstmn.io/v1/callback?code=THNuziDTHk1_q9zOG0t0_cHeuMRkAiZcEaYro9LIvkJzvsV7Pkx0rmtytN6_2Z4BQOJQz1kZ8Rx5N1Gw__vjlUuJqj2pjyfkPRa_11IwkMjMPjWH_8HPk0oO8cXVS4ut
   ```
@@ -89,7 +89,7 @@ mentioned in the query of the request with `code` as query parameter. this autho
     "expires_in": 299
   }
 
-- **Request Format (grant_type = client_credentials):**
+- **Request Format (grant_type = authorization_code):**
   ```bash
   curl --location 'http://localhost:9000/oauth2/token' \
   --header 'Authorization: Basic <client-creds-in-base64>' \
@@ -99,7 +99,7 @@ mentioned in the query of the request with `code` as query parameter. this autho
   --data-urlencode 'code=<code-generated-from-authorize-endpoint>' \
   --data-urlencode 'redirect_uri=<redirect-url-to-redirect-to>'
 
-- **Response Format (grant_type = client_credentials):**
+- **Response Format (grant_type = authorization_code):**
   ```json
   {
     "access_token": "eyJraWQiOiI3MGQzZjhhMS04ZDZlLTQyYzItODJjZS02NTY5MWE4OGY3ZTUiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJzaHViaGFtIiwiYXVkIjoibXktY2xpZW50IiwibmJmIjoxNzE4MDM2MzUzLCJzY29wZSI6WyJyZWFkIiwib3BlbmlkIiwicHJvZmlsZSJdLCJyb2xlcyI6WyJhZG1pbiIsInVzZXIiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDAwIiwiZXhwIjoxNzE4MDM2NjUzLCJpYXQiOjE3MTgwMzYzNTMsImp0aSI6IjliYWVlN2ViLWIxNTctNDFjYi05ZmI0LWIyMzc2MzgyYzgyMCJ9.JHtlE8_hCwZ4WSpyVler12ij1qTaYawZfYFfW0HzKOH94OnPOtBxNNLd6wvJUUYcc96b2mRP4-3gFs5NLk9SxXaxlzJiavvMRc8BYutNMEnrxpGXi1kwZKFpTszQKhj2qpbLQ5WwoAop87bdFzvUKES0g888cXVMlmiRbWehvDrgFTO337j4tmAvNkEe4bOX7G8ygO6TqpAkDTD_FVIta4gzf9N_4XiOsQ-YEKuaZtLs8TLMqWw2CF9zQJ2s4hRGLQ7bK3Q9QwqgFwOMUi_VPgDX5yHwtPEb65RocZemxKBEe5VcltU_B7jC0Zix0bJbO5mdupSU3hzea9_oQSiWnA",
