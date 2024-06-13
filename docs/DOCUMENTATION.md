@@ -155,6 +155,21 @@ mentioned in the query of the request with `code` as query parameter. this autho
     "token_type": "Bearer"
   }
 
+### 7. Token Revocation Endpoint
+- **Endpoint:** `/oauth2/revoke`
+- **Method:** POST
+- **Description:** Token revocation endpoint for revoking an OAuth2 token.
+- **Request:**
+  ```bash
+  curl --location 'http://<auth-server-url>/oauth2/revoke' \
+  --header 'Authorization: Basic <client-creds-in-base64>' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data-urlencode 'token=<refresh-token-to-introspect>' \
+  --data-urlencode 'token_type_hint=refresh_token'
+
+- **Response:**
+  ```json
+  200 OK
 
 ## Error Handling
 
