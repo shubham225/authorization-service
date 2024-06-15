@@ -57,6 +57,8 @@ To properly configure and run this project, you will need to set up the followin
 
 - **AUTH_DB_PASSWORD**: Set this variable to the password used to access your database.
 
+- **JWT_KEY_ID [Optional]**: Set this variable if wanted custom JWT Key ID (Optional Env. Variable).
+
 Make sure to set these environment variables either directly in your development environment or using a configuration file such as `application.properties` or `application.yml` for local development. Additionally, when deploying your Spring Boot application, you can configure these variables through your deployment environment settings.
 
 ## Features
