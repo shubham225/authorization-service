@@ -83,6 +83,7 @@ Here are some of the key API endpoints provided by the OAuth2 authorization serv
 - **`POST /oauth2/token`:** Token endpoint for obtaining OAuth2 access tokens and refresh tokens.
 - **`GET /oauth2/jwks`:** JSON Web Key Set (JWKS) endpoint providing public keys for validating JWTs issued by the Authorization Server.
 - **`POST /oauth2/introspect`:** Token introspection endpoint for checking the validity and details of an OAuth2 token.
+- **`POST /oauth2/revoke`:** Token revocation endpoint for revoking an OAuth2 token.
 
 ### Other Endpoints
 - **`GET /actuator/health`:** Exposes the health status of the application

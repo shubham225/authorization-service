@@ -171,6 +171,20 @@ mentioned in the query of the request with `code` as query parameter. this autho
   ```json
   200 OK
 
+### 7. Health Check Endpoint
+- **Endpoint:** `/actuator/health`
+- **Method:** GET
+- **Description:** Exposes the health status of the application.
+- **Request:**
+  ```bash
+   curl --location 'http://<auth-server-url>/actuator/health
+
+- **Response:**
+  ```json
+  {
+    "status": "UP"
+  }
+
 ## Error Handling
 
 ### 1. Error Response
