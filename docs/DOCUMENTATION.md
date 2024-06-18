@@ -185,6 +185,25 @@ mentioned in the query of the request with `code` as query parameter. this autho
     "status": "UP"
   }
 
+### 7. Info Endpoint
+- **Endpoint:** `/actuator/info`
+- **Method:** GET
+- **Description:** Provides general information about the application.
+- **Request:**
+  ```bash
+   curl --location 'http://<auth-server-url>/actuator/info'
+
+- **Response:**
+  ```json
+  {
+    "application": {
+        "name": "authorization-server",
+        "description": "OAuth2 Authorization Server",
+        "author": "Shubham Shinde",
+        "version": "0.0.1"
+    }
+  }
+
 ## Error Handling
 
 ### 1. Error Response
