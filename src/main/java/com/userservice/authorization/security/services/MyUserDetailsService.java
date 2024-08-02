@@ -39,7 +39,7 @@ public class MyUserDetailsService implements UserDetailsService {
         return userDetails;
 
         // commented because of the 'Cannot invoke "com.userservice.authorization.models.User.getPassword()" because "this.user" is null' error with Authorization Code flow
-        // TODO : Find out the cause of the error, mostly because of json serialization create bean with default constructor
+        // TODO : Find out the cause of the error.
 //        return new MyUserDetails(user);
     }
 
