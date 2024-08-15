@@ -10,4 +10,9 @@ public class IndexController {
     String getIndex() {
         return "index";
     }
+
+    @GetMapping("/login")
+    String getLogin() {
+        return "index";
+    }
 }
