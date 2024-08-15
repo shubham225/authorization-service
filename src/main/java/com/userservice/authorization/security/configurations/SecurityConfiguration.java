@@ -84,6 +84,7 @@ public class SecurityConfiguration {
             throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/api/V1/users/signup").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/V1/users/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
@@ -103,8 +104,8 @@ public class SecurityConfiguration {
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.myAuthenticationEntryPoint))
                 // Form login handles the redirect to the login page from the
                 // authorization server filter chain
-                .formLogin(Customizer.withDefaults());
-
+//                .formLogin(Customizer.withDefaults());
+                .formLogin(form -> form.loginPage("/login").permitAll());
         return http.build();
     }
 
