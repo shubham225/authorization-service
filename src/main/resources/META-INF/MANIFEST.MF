@@ -1,0 +1,48 @@
+Manifest-Version: 1.0
+Main-Class: com.userservice.authorization.AuthorizationServiceApplicatio
+ n
+Class-Path: jakarta.annotation-api-2.1.1.jar spring-orm-6.1.2.jar jackso
+ n-module-parameter-names-2.15.3.jar spring-boot-starter-jdbc-3.2.1.jar 
+ jcip-annotations-1.0-1.jar spring-security-config-6.2.1.jar spring-jcl-
+ 6.1.2.jar LatencyUtils-2.0.3.jar jul-to-slf4j-2.0.9.jar spring-boot-aut
+ oconfigure-3.2.1.jar spring-security-oauth2-resource-server-6.2.1.jar j
+ akarta.inject-api-2.0.1.jar byte-buddy-1.14.10.jar spring-web-6.1.2.jar
+  jboss-logging-3.5.3.Final.jar h2-2.2.224.jar micrometer-core-1.12.1.ja
+ r HdrHistogram-2.1.12.jar spring-boot-starter-thymeleaf-3.2.1.jar log4j
+ -api-2.21.1.jar jakarta.activation-api-2.1.2.jar flyway-mysql-9.22.3.ja
+ r spring-boot-starter-logging-3.2.1.jar istack-commons-runtime-4.1.2.ja
+ r tomcat-embed-el-10.1.17.jar thymeleaf-spring6-3.1.2.RELEASE.jar sprin
+ g-security-crypto-6.2.1.jar jackson-core-2.15.3.jar attoparser-2.0.7.RE
+ LEASE.jar bcutil-jdk15on-1.70.jar bcprov-jdk15on-1.70.jar micrometer-co
+ mmons-1.12.1.jar snakeyaml-2.2.jar spring-context-6.1.2.jar spring-boot
+ -actuator-3.2.1.jar micrometer-jakarta9-1.12.1.jar logback-core-1.4.14.
+ jar antlr4-runtime-4.13.0.jar spring-boot-3.2.1.jar spring-webmvc-6.1.2
+ .jar micrometer-observation-1.12.1.jar jakarta.transaction-api-2.0.1.ja
+ r spring-security-web-6.2.1.jar caffeine-3.1.8.jar spring-boot-configur
+ ation-processor-3.2.1.jar angus-activation-2.0.1.jar jcl-over-slf4j-2.0
+ .9.jar commons-codec-1.16.0.jar spring-security-core-6.2.1.jar HikariCP
+ -5.0.1.jar spring-boot-starter-tomcat-3.2.1.jar spring-boot-starter-oau
+ th2-authorization-server-3.2.1.jar spring-data-commons-3.2.1.jar thymel
+ eaf-3.1.2.RELEASE.jar spring-data-jpa-3.2.1.jar error_prone_annotations
+ -2.21.1.jar flyway-core-9.22.3.jar tomcat-embed-core-10.1.17.jar spring
+ -security-oauth2-jose-6.2.1.jar spring-aspects-6.1.2.jar jandex-3.1.2.j
+ ar jna-5.12.1.jar nimbus-jose-jwt-9.35.jar jakarta.persistence-api-3.1.
+ 0.jar bcpkix-jdk15on-1.70.jar tomcat-embed-websocket-10.1.17.jar slf4j-
+ api-2.0.9.jar spring-jdbc-6.1.2.jar spring-tx-6.1.2.jar spring-boot-sta
+ rter-web-3.2.1.jar spring-boot-starter-json-3.2.1.jar spring-boot-start
+ er-aop-3.2.1.jar jakarta.xml.bind-api-4.0.1.jar jackson-datatype-jdk8-2
+ .15.3.jar hibernate-core-6.4.1.Final.jar jaxb-core-4.0.4.jar hibernate-
+ commons-annotations-6.0.6.Final.jar jackson-annotations-2.15.3.jar jack
+ son-databind-2.15.3.jar waffle-jna-3.2.0.jar lombok-1.18.30.jar logback
+ -classic-1.4.14.jar classmate-1.6.0.jar jackson-datatype-jsr310-2.15.3.
+ jar unbescape-1.1.6.RELEASE.jar spring-aop-6.1.2.jar gson-2.10.1.jar sp
+ ring-boot-starter-actuator-3.2.1.jar spring-security-oauth2-authorizati
+ on-server-1.2.1.jar spring-boot-starter-data-jpa-3.2.1.jar mariadb-java
+ -client-3.2.0.jar spring-beans-6.1.2.jar spring-core-6.1.2.jar aspectjw
+ eaver-1.9.21.jar jackson-dataformat-toml-2.15.3.jar spring-boot-starter
+ -3.2.1.jar cas-client-core-4.0.3.jar log4j-to-slf4j-2.21.1.jar txw2-4.0
+ .4.jar spring-security-oauth2-core-6.2.1.jar spring-expression-6.1.2.ja
+ r spring-security-cas-6.2.1.jar jaxb-runtime-4.0.4.jar jna-platform-5.1
+ 2.1.jar spring-boot-actuator-autoconfigure-3.2.1.jar checker-qual-3.23.
+ 0.jar
+
