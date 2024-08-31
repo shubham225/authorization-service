@@ -1,6 +1,6 @@
 package com.userservice.authorization;
 
-import com.userservice.authorization.security.configurations.RsaKeyProperties;
+import com.userservice.authorization.configuration.properties.RsaKeyProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

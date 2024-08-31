@@ -5,4 +5,5 @@
 |  | |  ||  .-.  ||  ||  |'-.  .-'|  .-.  |.-' .'  |  ()  | |  |    Port: ${server.port}
 '  '-'  '|  | |  |'  ''  '  |  |  |  | |  /   '-.--.\    /  |  |    Pid: ${pid}
  `-----' `--' `--' `----'   `--'  `--' `--'-----'--' `--'   |  |    SpringBoot Version: ${spring-boot.version}
-                                                            `--'
+                                                            `--'    Profile: ${spring.profiles.active}
+

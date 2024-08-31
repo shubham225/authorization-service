@@ -1,6 +1,18 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:${HOME:${HOMEDRIVE}${HOMEPATH}}/shenyu;DB_CLOSE_DELAY=-1;MODE=MySQL;
+    url: jdbc:h2:mem:${HOME:${HOMEDRIVE}${HOMEPATH}}/authServiceDB;DB_CLOSE_DELAY=-1;MODE=MySQL;
     username: sa
     password: sa
     driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+logging:
+  level:
+    com:
+      zaxxer.hakari.HakariConfig: DEBUG
