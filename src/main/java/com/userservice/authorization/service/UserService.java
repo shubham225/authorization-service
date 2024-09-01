@@ -1,13 +1,17 @@
 package com.userservice.authorization.service;
 
+import com.userservice.authorization.model.dto.ChangePasswordDTO;
+import com.userservice.authorization.model.dto.UserCreationDTO;
 import com.userservice.authorization.model.dto.UserDTO;
+import com.userservice.authorization.model.entity.User;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    public List<UserDTO> getAllUsers();
-    public UserDTO getUserByID(UUID id);
-    public UserDTO addNewUser(UserDTO user);
-    public UserDTO modifyUserDetails(UserDTO user);
+    List<UserDTO> getAllUsers();
+    UserDTO getUserDTOByID(UUID id);
+    UserDTO addNewUser(UserCreationDTO user);
+    UserDTO changePassword(ChangePasswordDTO user);
+    User getUserByID(UUID id);
 }

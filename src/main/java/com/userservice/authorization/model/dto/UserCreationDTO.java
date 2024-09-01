@@ -1,7 +1,5 @@
 package com.userservice.authorization.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.userservice.authorization.model.entity.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,9 +10,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class UserDTO {
-    private UUID    id;
+public class UserCreationDTO {
+    private UUID id;
     private String  username;
+    private String  password;
     private String  email;
     private String  mobile;
     private String  address;

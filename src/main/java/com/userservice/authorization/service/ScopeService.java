@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ScopeService {
-    public List<ScopeDTO> getAllScopes();
-    public ScopeDTO getScopeByID(UUID id);
-    public Scope getScopeByName(String name);
-    public ScopeDTO addNewScope(ScopeDTO user);
-    public ScopeDTO modifyScope(ScopeDTO user);
+    List<ScopeDTO> getAllScopes();
+    ScopeDTO getScopeByID(UUID id);
+    Scope getScopeByName(String name);
+    ScopeDTO addNewScope(ScopeDTO user);
+    ScopeDTO modifyScope(ScopeDTO user);
 }

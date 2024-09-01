@@ -1,6 +1,5 @@
 package com.userservice.authorization.model.result;
 
-import com.userservice.authorization.common.constant.CommonErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

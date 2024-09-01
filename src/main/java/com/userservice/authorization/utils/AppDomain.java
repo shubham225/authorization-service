@@ -6,13 +6,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AppDomain {
-    private static final AppDomain APP_DOMAIN = new AppDomain();
+    private static final AppDomain INSTANCE = new AppDomain();
     private String httpPath;
 
     private AppDomain() {
     }
 
     public static AppDomain getInstance() {
-        return APP_DOMAIN;
+        return INSTANCE;
     }
 }

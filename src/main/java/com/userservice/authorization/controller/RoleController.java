@@ -1,7 +1,5 @@
 package com.userservice.authorization.controller;
 
-import com.userservice.authorization.exception.RoleNotFoundException;
-import com.userservice.authorization.model.dto.ClientDTO;
 import com.userservice.authorization.model.dto.RoleDTO;
 import com.userservice.authorization.model.result.AppResult;
 import com.userservice.authorization.service.RoleService;

@@ -1,6 +1,6 @@
 package com.userservice.authorization.model.mapper;
 
-import com.userservice.authorization.model.dto.UserDTO;
+import com.userservice.authorization.model.dto.UserCreationDTO;
 import com.userservice.authorization.model.entity.Role;
 import com.userservice.authorization.model.entity.User;
 import org.springframework.stereotype.Component;
@@ -9,11 +9,11 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class UserDTOMapper implements Function<User, UserDTO> {
+public class UserResponseDTOMapper implements Function<User, UserCreationDTO> {
 
     @Override
-    public UserDTO apply(User user) {
-        return UserDTO.builder()
+    public UserCreationDTO apply(User user) {
+        return UserCreationDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())

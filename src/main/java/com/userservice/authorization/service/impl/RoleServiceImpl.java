@@ -34,7 +34,7 @@ public class RoleServiceImpl implements RoleService {
         Optional<Role> roleOptional = roleRepository.findById(id);
 
         if(roleOptional.isEmpty())
-            throw new RoleNotFoundException("Role with id '" + id + "' doesn't exists");
+            throw new RoleNotFoundException("Role with id '" + id + "' doesn't exist.");
 
         return roleDTOMapper.apply(roleOptional.get());
     }
@@ -61,7 +61,7 @@ public class RoleServiceImpl implements RoleService {
         Optional<Role> roleOptional = roleRepository.findByRole(name);
 
         if (roleOptional.isEmpty())
-            throw new RuntimeException("Role not found");
+            throw new RoleNotFoundException("Role with name '" + name + "' doesn't exist.");
 
         return roleOptional.get();
     }

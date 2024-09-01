@@ -1,5 +1,6 @@
 package com.userservice.authorization.controller;
 
+import com.userservice.authorization.common.message.AuthMessage;
 import com.userservice.authorization.model.dto.ClientDTO;
 import com.userservice.authorization.model.dto.RegisterClientDTO;
 import com.userservice.authorization.model.result.AppResult;
@@ -24,7 +25,7 @@ public class ClientController {
     )
     public ResponseEntity<AppResult> getAllClients() {
         List<ClientDTO> client = clientService.getAllClients();
-        return AppResult.success("", client);
+        return AppResult.success(AuthMessage.SUCCESS_MESSAGE, client);
     }
 
     @RequestMapping(
@@ -33,7 +34,7 @@ public class ClientController {
     )
     public ResponseEntity<AppResult> getClientByID(@PathVariable String id) {
         ClientDTO client = clientService.getClientDTOByID(id);
-        return AppResult.success("", client);
+        return AppResult.success(AuthMessage.SUCCESS_MESSAGE, client);
     }
 
     @RequestMapping(
@@ -42,15 +43,15 @@ public class ClientController {
     )
     public ResponseEntity<AppResult> addNewClient(@RequestBody ClientDTO request) {
         RegisterClientDTO client = clientService.addNewClient(request);
-        return AppResult.success("", client);
+        return AppResult.success(AuthMessage.SUCCESS_MESSAGE, client);
     }
 
     @RequestMapping(
-            path = "/{id}",
+            path = "/regenerateSecret/{id}",
             method = RequestMethod.PUT
     )
     public ResponseEntity<AppResult> regenerateSecret(@PathVariable String id) {
         RegisterClientDTO client = clientService.regenerateSecret(id);
-        return AppResult.success("", client);
+        return AppResult.success(AuthMessage.SUCCESS_MESSAGE, client);
     }
 }

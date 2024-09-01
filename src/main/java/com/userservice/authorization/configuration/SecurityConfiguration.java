@@ -27,6 +27,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -89,8 +90,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/V1/user/signup").permitAll()
+                        .requestMatchers("/api/V1/role/**").hasAnyAuthority("ROLE_admin")
                         .requestMatchers("/api/V1/user/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
+                        .requestMatchers("/api/V1/scope/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
                         .requestMatchers("/api/V1/client/**").hasAnyAuthority("SCOPE_client.read", "ROLE_admin")
                         .requestMatchers("/api/V1/client/register").hasAuthority("SCOPE_client.write")
                         .anyRequest().authenticated()
@@ -109,7 +111,7 @@ public class SecurityConfiguration {
                 // Form login handles the redirect to the login page from the
                 // authorization server filter chain
 //                .formLogin(Customizer.withDefaults());
-//                .headers(header->{header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable);})
+                .headers(header->{header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable);})
                 .formLogin(form -> form.loginPage("/login").permitAll());
         return http.build();
     }

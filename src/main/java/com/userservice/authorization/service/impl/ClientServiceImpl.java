@@ -2,7 +2,6 @@ package com.userservice.authorization.service.impl;
 
 import com.userservice.authorization.exception.ClientNotFoundException;
 import com.userservice.authorization.model.dto.ClientDTO;
-import com.userservice.authorization.model.dto.ClientRegistrationRequestDto;
 import com.userservice.authorization.exception.ClientAlreadyExistsException;
 import com.userservice.authorization.model.dto.RegisterClientDTO;
 import com.userservice.authorization.model.entity.Client;
@@ -12,7 +11,7 @@ import com.userservice.authorization.model.mapper.RegisterClientDTOMapper;
 import com.userservice.authorization.repository.ClientRepository;
 import com.userservice.authorization.service.ClientService;
 import com.userservice.authorization.service.ScopeService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -30,16 +29,19 @@ public class ClientServiceImpl implements ClientService {
     private final RegisteredClientRepository registeredClientRepository;
     private final ClientRepository clientRepository;
     private final ClientDTOMapper clientDTOMapper;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final ScopeService scopeService;
     private final RegisterClientDTOMapper registerClientDTOMapper;
 
     public ClientServiceImpl(RegisteredClientRepository registeredClientRepository,
-                             ClientRepository clientRepository,
-                             BCryptPasswordEncoder bCryptPasswordEncoder, ClientDTOMapper clientDTOMapper, ScopeService scopeService, RegisterClientDTOMapper registerClientDTOMapper) {
+                             ClientRepository           clientRepository,
+                             PasswordEncoder            passwordEncoder,
+                             ClientDTOMapper            clientDTOMapper,
+                             ScopeService               scopeService,
+                             RegisterClientDTOMapper    registerClientDTOMapper) {
         this.registeredClientRepository = registeredClientRepository;
         this.clientRepository = clientRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.passwordEncoder = passwordEncoder;
         this.clientDTOMapper = clientDTOMapper;
         this.scopeService = scopeService;
         this.registerClientDTOMapper = registerClientDTOMapper;
@@ -88,7 +90,7 @@ public class ClientServiceImpl implements ClientService {
         RegisteredClient registeredClient = RegisteredClient.withId(id)
                 .clientId(id)
                 .clientName(clientDTO.getClientName())
-                .clientSecret(bCryptPasswordEncoder.encode(secret))
+                .clientSecret(passwordEncoder.encode(secret))
                 .clientIdIssuedAt(Instant.now())
                 .clientAuthenticationMethods(clientAuthMethods -> clientDTO.getClientAuthenticationMethods().forEach(
                         clientAuthMethod -> clientAuthMethods.add(new ClientAuthenticationMethod(clientAuthMethod))
@@ -118,7 +120,7 @@ public class ClientServiceImpl implements ClientService {
         String secret = generateUniqueSecret();
 
         Client client = getClientByID(id);
-        client.setClientSecret(bCryptPasswordEncoder.encode(secret));
+        client.setClientSecret(passwordEncoder.encode(secret));
 
         client = clientRepository.save(client);
         client.setClientSecret(secret);
@@ -126,7 +128,7 @@ public class ClientServiceImpl implements ClientService {
         return registerClientDTOMapper.apply(client);
     }
 
-    private void validateClientDetails(ClientRegistrationRequestDto client) throws Exception {
+    private void validateClientDetails(ClientDTO client) throws Exception {
         Assert.notNull(client, "request should have value.");
         Assert.notNull(client.getClientName(), "client_name should be present in the request.");
         Assert.hasText(client.getClientName(), "client_name cannot be blank.");

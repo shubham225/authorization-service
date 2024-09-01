@@ -7,10 +7,10 @@ import com.userservice.authorization.model.entity.Client;
 import java.util.List;
 
 public interface ClientService {
-    public Client getClientByName(String clientName);
-    public Client getClientByID(String id);
-    public List<ClientDTO> getAllClients();
-    public ClientDTO getClientDTOByID(String id);
-    public RegisterClientDTO addNewClient(ClientDTO dto);
-    public RegisterClientDTO regenerateSecret(String id);
+    Client getClientByName(String clientName);
+    Client getClientByID(String id);
+    List<ClientDTO> getAllClients();
+    ClientDTO getClientDTOByID(String id);
+    RegisterClientDTO addNewClient(ClientDTO dto);
+    RegisterClientDTO regenerateSecret(String id);
 }
