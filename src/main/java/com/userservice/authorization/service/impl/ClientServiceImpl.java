@@ -1,13 +1,17 @@
 package com.userservice.authorization.service.impl;
 
+import com.userservice.authorization.exception.ClientNotFoundException;
 import com.userservice.authorization.model.dto.ClientDTO;
 import com.userservice.authorization.model.dto.ClientRegistrationRequestDto;
-import com.userservice.authorization.model.dto.ClientRegistrationResponseDto;
 import com.userservice.authorization.exception.ClientAlreadyExistsException;
+import com.userservice.authorization.model.dto.RegisterClientDTO;
 import com.userservice.authorization.model.entity.Client;
 
+import com.userservice.authorization.model.mapper.ClientDTOMapper;
+import com.userservice.authorization.model.mapper.RegisterClientDTOMapper;
 import com.userservice.authorization.repository.ClientRepository;
 import com.userservice.authorization.service.ClientService;
+import com.userservice.authorization.service.ScopeService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -25,93 +29,101 @@ import java.util.UUID;
 public class ClientServiceImpl implements ClientService {
     private final RegisteredClientRepository registeredClientRepository;
     private final ClientRepository clientRepository;
+    private final ClientDTOMapper clientDTOMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ScopeService scopeService;
+    private final RegisterClientDTOMapper registerClientDTOMapper;
 
     public ClientServiceImpl(RegisteredClientRepository registeredClientRepository,
                              ClientRepository clientRepository,
-                             BCryptPasswordEncoder bCryptPasswordEncoder) {
+                             BCryptPasswordEncoder bCryptPasswordEncoder, ClientDTOMapper clientDTOMapper, ScopeService scopeService, RegisterClientDTOMapper registerClientDTOMapper) {
         this.registeredClientRepository = registeredClientRepository;
         this.clientRepository = clientRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.clientDTOMapper = clientDTOMapper;
+        this.scopeService = scopeService;
+        this.registerClientDTOMapper = registerClientDTOMapper;
     }
 
     @Override
-    public ClientRegistrationResponseDto registerClient(ClientRegistrationRequestDto client) throws Exception {
-        // Run Validations
-        validateClientDetails(client);
+    public Client getClientByName(String clientName) {
+        Optional<Client> clientOptional = clientRepository.findByClientName(clientName);
 
-        // Generate Unique Values
-        String id = generateUniqueID();
-        String secret = generateUniqueSecret();
-
-        // Generate Registered Client Builder
-        RegisteredClient.Builder clientBuilder = RegisteredClient.withId(id)
-                .clientId(id)
-                .clientSecret(bCryptPasswordEncoder.encode(secret));
-
-        clientBuilder.clientName(client.getClientName());
-        clientBuilder.clientIdIssuedAt(Instant.now());
-
-        if(client.getClientAuthenticationMethods() != null) {
-            for (String clientAuthMethod : client.getClientAuthenticationMethods()) {
-                clientBuilder.clientAuthenticationMethod(new ClientAuthenticationMethod(clientAuthMethod));
-            }
+        if(clientOptional.isEmpty()) {
+            throw new ClientNotFoundException("Client with name '" + clientName + "' not found.");
         }
 
-        if(client.getAuthorizationGrantTypes() != null) {
-            for (String authGrantType : client.getAuthorizationGrantTypes()) {
-                clientBuilder.authorizationGrantType(new AuthorizationGrantType(authGrantType));
-            }
-        }
-
-        if(client.getScopes() != null) {
-            for (String scope : client.getScopes()) {
-                clientBuilder.scope(scope);
-            }
-        }
-
-        if(client.getRedirectUris() != null) {
-            for (String redirectUri : client.getRedirectUris()) {
-                clientBuilder.redirectUri(redirectUri);
-            }
-        }
-
-        if(client.getPostLogoutRedirectUris() != null) {
-            for (String postLogoutRedirectUri : client.getPostLogoutRedirectUris()) {
-                clientBuilder.postLogoutRedirectUri(postLogoutRedirectUri);
-            }
-        }
-
-        // Build Client and Save
-        RegisteredClient registeredClient = clientBuilder.build();
-        registeredClientRepository.save(registeredClient);
-
-        return (new ClientRegistrationResponseDto(registeredClient.getClientId(), secret));
-    }
-
-    @Override
-    public ClientDTO getClientByName(String clientName) {
-        return null;
+        return clientOptional.get();
     }
 
     @Override
     public List<ClientDTO> getAllClients() {
-        return List.of();
+        List<Client> clients = clientRepository.findAll();
+        return clients.stream()
+                .map(clientDTOMapper).toList();
+    }
+
+    public Client getClientByID(String id) {
+        Optional<Client> clientOptional = clientRepository.findByClientId(id);
+        if (clientOptional.isEmpty())
+            throw new ClientNotFoundException("Client with id '" + id + "' not found.");
+
+        return clientOptional.get();
     }
 
     @Override
-    public ClientDTO getClientByID(String id) {
-        return null;
+    public ClientDTO getClientDTOByID(String id) {
+        return clientDTOMapper.apply(getClientByID(id));
     }
 
     @Override
-    public ClientDTO addNewClient(ClientDTO dto) {
-        return null;
+    public RegisterClientDTO addNewClient(ClientDTO clientDTO) {
+        String id = generateUniqueID();
+        String secret = generateUniqueSecret();
+
+        clientDTO.getScopes().forEach(
+                scopeService::getScopeByName
+        );
+
+        RegisteredClient registeredClient = RegisteredClient.withId(id)
+                .clientId(id)
+                .clientName(clientDTO.getClientName())
+                .clientSecret(bCryptPasswordEncoder.encode(secret))
+                .clientIdIssuedAt(Instant.now())
+                .clientAuthenticationMethods(clientAuthMethods -> clientDTO.getClientAuthenticationMethods().forEach(
+                        clientAuthMethod -> clientAuthMethods.add(new ClientAuthenticationMethod(clientAuthMethod))
+                ))
+                .authorizationGrantTypes(authGrantTypes -> clientDTO.getAuthorizationGrantTypes().forEach(
+                        authGrantType -> authGrantTypes.add(new AuthorizationGrantType(authGrantType))
+                ))
+                .redirectUris(redirectUris -> redirectUris
+                        .addAll(clientDTO.getRedirectUris())
+                )
+                .postLogoutRedirectUris(postLogoutRedirectUris -> postLogoutRedirectUris
+                        .addAll(clientDTO.getPostLogoutRedirectUris())
+                )
+                .scopes(scopes -> scopes.addAll(clientDTO.getScopes())
+                )
+                .build();
+
+        registeredClientRepository.save(registeredClient);
+        Client client = getClientByID(registeredClient.getClientId());
+        client.setClientSecret(secret);
+
+        return registerClientDTOMapper.apply(client);
     }
 
     @Override
-    public ClientDTO regenerateSecret(String id) {
-        return null;
+    public RegisterClientDTO regenerateSecret(String id) {
+        String secret = generateUniqueSecret();
+
+        Client client = getClientByID(id);
+        client.setClientSecret(bCryptPasswordEncoder.encode(secret));
+
+        client = clientRepository.save(client);
+        client.setClientSecret(secret);
+
+        return registerClientDTOMapper.apply(client);
     }
 
     private void validateClientDetails(ClientRegistrationRequestDto client) throws Exception {
@@ -133,5 +145,4 @@ public class ClientServiceImpl implements ClientService {
     private String generateUniqueSecret() {
         return UUID.randomUUID().toString().replace("-", "");
     }
-
 }

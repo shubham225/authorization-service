@@ -9,13 +9,13 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@JsonSerialize(as = Role.class)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "`role`")
-public class Role extends BaseEntity {
+@Table(name = "`scope`")
+@JsonSerialize(as = Role.class)
+public class Scope extends BaseEntity{
     @Column(unique = true, nullable = false)
-    private String role;
+    private String scope;
     private String description;
 }

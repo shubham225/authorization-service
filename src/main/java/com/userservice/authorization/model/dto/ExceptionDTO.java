@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class ErrorResponseDto {
+public class ExceptionDTO {
     private String status;
     private String error;
     private String message;
@@ -17,11 +17,11 @@ public class ErrorResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Date timestamp;
 
-    public ErrorResponseDto() {
+    public ExceptionDTO() {
         timestamp = new Date();
     }
 
-    public ErrorResponseDto(Exception exception, HttpServletRequest request) {
+    public ExceptionDTO(Exception exception, HttpServletRequest request) {
         this.error = exception.getClass().getSimpleName();
         this.message = exception.getMessage();
         this.timestamp = new Date();

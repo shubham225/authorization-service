@@ -1,14 +1,19 @@
 package com.userservice.authorization.controller;
 
+import com.userservice.authorization.model.dto.ClientDTO;
 import com.userservice.authorization.model.dto.UserAddResponseDto;
 import com.userservice.authorization.model.dto.UserAddRequestDto;
+import com.userservice.authorization.model.dto.UserDTO;
 import com.userservice.authorization.model.entity.Role;
 import com.userservice.authorization.model.entity.User;
+import com.userservice.authorization.model.result.AppResult;
 import com.userservice.authorization.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/V1/user")
@@ -20,50 +25,29 @@ public class UserController {
     }
 
     @RequestMapping(
-            method = RequestMethod.GET,
-            path = "/"
+            path = "/",
+            method = RequestMethod.GET
     )
-    public List<UserAddResponseDto> getAllUsers() {
-        List<User> users = userService.getAllUser();
-        List<UserAddResponseDto> userResponse = new ArrayList<>();
-
-        for(User user : users) {
-            UserAddResponseDto userAddResponseDto = new UserAddResponseDto();
-
-            userAddResponseDto.setUsername(user.getUsername());
-            userAddResponseDto.setIsActive(user.isActive());
-            for (Role role : user.getRoles()) {
-                userAddResponseDto.getRoles().add(role.getRole());
-            }
-            userResponse.add(userAddResponseDto);
-        }
-
-        return userResponse;
+    public ResponseEntity<AppResult> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
+        return AppResult.success("", users);
     }
 
     @RequestMapping(
-            method = RequestMethod.GET,
-            path = "/{id}"
+            path = "/{id}",
+            method = RequestMethod.GET
     )
-    public UserAddResponseDto getUsers(@PathVariable int id) throws Exception {
-        User user = userService.getUser(id);
-
-        UserAddResponseDto userAddResponseDto = new UserAddResponseDto();
-
-        userAddResponseDto.setUsername(user.getUsername());
-        userAddResponseDto.setIsActive(user.isActive());
-        for(Role role : user.getRoles()) {
-            userAddResponseDto.getRoles().add(role.getRole());
-        }
-
-        return userAddResponseDto;
+    public ResponseEntity<AppResult> getUserByID(@PathVariable UUID id) {
+        UserDTO user = userService.getUserByID(id);
+        return AppResult.success("", user);
     }
 
     @RequestMapping(
-            method = RequestMethod.POST,
-            path = "/signup"
+            path = "/",
+            method = RequestMethod.POST
     )
-    public UserAddResponseDto addUser(@RequestBody UserAddRequestDto user) throws Exception {
-        return userService.addUser(user);
+    public ResponseEntity<AppResult> addNewUser(@RequestBody UserDTO request) {
+        UserDTO user = userService.addNewUser(request);
+        return AppResult.success("", user);
     }
 }

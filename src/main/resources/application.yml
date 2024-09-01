@@ -23,7 +23,7 @@ spring:
     active: mysql
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
   thymeleaf:
     cache: true
@@ -31,7 +31,9 @@ spring:
     enabled: true
     prefix: classpath:/static/
     suffix: .html
-  
+  flyway:
+    enabled: false
+
 # Actuator Endpoints
 management:
   endpoints:

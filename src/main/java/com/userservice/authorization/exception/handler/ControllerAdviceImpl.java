@@ -1,10 +1,8 @@
 package com.userservice.authorization.exception.handler;
 
-import com.userservice.authorization.exception.ClientAlreadyExistsException;
-import com.userservice.authorization.exception.IllegalValueException;
-import com.userservice.authorization.exception.NullUserRolesException;
-import com.userservice.authorization.exception.UserAlreadyExistsException;
-import com.userservice.authorization.model.dto.ErrorResponseDto;
+import com.userservice.authorization.exception.*;
+import com.userservice.authorization.model.dto.ExceptionDTO;
+import com.userservice.authorization.model.result.AppResult;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,27 +17,28 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @ControllerAdvice
 public class ControllerAdviceImpl {
     @ExceptionHandler(NullUserRolesException.class)
-    public ResponseEntity<ErrorResponseDto> handleNullUserRolesException(NullUserRolesException exception, HttpServletRequest request) {
-        ErrorResponseDto error = new ErrorResponseDto(exception, request);
+    public ResponseEntity<AppResult> handleNullUserRolesException(NullUserRolesException exception, HttpServletRequest request) {
+        ExceptionDTO error = new ExceptionDTO(exception, request);
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         error.setStatus(status.toString());
 
-        return new ResponseEntity<ErrorResponseDto>(error, status);
+        return AppResult.badRequest(exception.getMessage(), error);
     }
 
     @ExceptionHandler({
             ClientAlreadyExistsException.class,
             IllegalValueException.class,
-            UserAlreadyExistsException.class
+            UserAlreadyExistsException.class,
+            RoleNotFoundException.class
     })
-    public ResponseEntity<ErrorResponseDto> handleValidationExceptions(Exception exception, HttpServletRequest request) {
-        ErrorResponseDto error = new ErrorResponseDto(exception, request);
+    public ResponseEntity<AppResult> handleValidationExceptions(Exception exception, HttpServletRequest request) {
+        ExceptionDTO error = new ExceptionDTO(exception, request);
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         error.setStatus(status.toString());
 
-        return new ResponseEntity<ErrorResponseDto>(error, status);
+        return AppResult.badRequest(exception.getMessage(), error);
     }
 
     @ExceptionHandler({
@@ -48,13 +47,13 @@ public class ControllerAdviceImpl {
             InsufficientAuthenticationException.class,
             InvalidBearerTokenException.class
     })
-    public ResponseEntity<ErrorResponseDto> handleUnauthorizedAccessException(Exception exception, HttpServletRequest request) {
-        ErrorResponseDto error = new ErrorResponseDto(exception, request);
+    public ResponseEntity<AppResult> handleUnauthorizedAccessException(Exception exception, HttpServletRequest request) {
+        ExceptionDTO error = new ExceptionDTO(exception, request);
         HttpStatus status = HttpStatus.UNAUTHORIZED;
 
         error.setStatus(status.toString());
 
-        return new ResponseEntity<ErrorResponseDto>(error, status);
+        return AppResult.unauthorized(exception.getMessage(), error);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
@@ -64,12 +63,12 @@ public class ControllerAdviceImpl {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleException(Exception exception, HttpServletRequest request) {
-        ErrorResponseDto error = new ErrorResponseDto(exception, request);
+    public ResponseEntity<AppResult> handleException(Exception exception, HttpServletRequest request) {
+        ExceptionDTO error = new ExceptionDTO(exception, request);
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         error.setStatus(status.toString());
 
-        return new ResponseEntity<ErrorResponseDto>(error, status);
+        return AppResult.error(exception.getMessage(), error);
     }
 }

@@ -1,82 +1,79 @@
 package com.userservice.authorization.service.impl;
 
-import com.userservice.authorization.model.dto.UserAddResponseDto;
 import com.userservice.authorization.model.dto.UserAddRequestDto;
 import com.userservice.authorization.exception.IllegalValueException;
-import com.userservice.authorization.exception.NullUserRolesException;
 import com.userservice.authorization.exception.UserAlreadyExistsException;
-import com.userservice.authorization.model.entity.Role;
+import com.userservice.authorization.model.dto.UserDTO;
 import com.userservice.authorization.model.entity.User;
-import com.userservice.authorization.repository.RoleRepository;
+import com.userservice.authorization.model.mapper.UserDTOMapper;
 import com.userservice.authorization.repository.UserRepository;
+import com.userservice.authorization.service.RoleService;
 import com.userservice.authorization.service.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserDTOMapper userDTOMapper;
+    private final RoleService  roleService;
 
 
     public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           BCryptPasswordEncoder bCryptPasswordEncoder) {
+                           UserDTOMapper userDTOMapper,
+                           RoleService roleService) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userDTOMapper = userDTOMapper;
+        this.roleService = roleService;
     }
+
     @Override
-    public User getUser(int id) throws Exception {
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(userDTOMapper).toList();
+    }
+
+    @Override
+    public UserDTO getUserByID(UUID id) {
         Optional<User> userOptional = userRepository.findById(id);
 
         if(userOptional.isEmpty())
             throw new UsernameNotFoundException("User with id '"+ id + "' doesn't exists");
 
-        return userOptional.get();
+        return userDTOMapper.apply(userOptional.get());
     }
 
     @Override
-    public List<User> getAllUser() {
-        return userRepository.findAll();
+    public UserDTO addNewUser(UserDTO user) {
+        User user1 = User.builder()
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .mobile(user.getMobile())
+                .address(user.getAddress())
+                .city(user.getCity())
+                .isActive(true)
+                .roles(
+                        user.getRoles().stream().map(
+                                role -> roleService.getRoleByName(role.getRole()))
+                                .collect(Collectors.toSet())
+                )
+                .build();
+
+        user1 = userRepository.save(user1);
+
+        return userDTOMapper.apply(user1);
     }
 
-    public UserAddResponseDto addUser(UserAddRequestDto user) throws Exception {
-
-        validateUserDetails(user);
-
-        User newUser = new User();
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        newUser.setActive(false);
-
-        if(user.getRoles() != null) {
-            for(String role : user.getRoles()) {
-                Optional<Role> optionalRole = roleRepository.findByRole(role);
-
-                if(optionalRole.isEmpty())
-                    newUser.getRoles().add(new Role(role));
-                else
-                    newUser.getRoles().add(optionalRole.get());
-            }
-        }else {
-            throw new NullUserRolesException("User roles should not be null");
-        }
-
-        userRepository.save(newUser);
-
-        UserAddResponseDto userAddResponseDto = new UserAddResponseDto();
-        userAddResponseDto.setUsername(newUser.getUsername());
-        userAddResponseDto.setIsActive(false);
-        userAddResponseDto.setRoles(user.getRoles());
-
-        return userAddResponseDto;
+    @Override
+    public UserDTO modifyUserDetails(UserDTO user) {
+        return null;
     }
 
     private void validateUserDetails(UserAddRequestDto user) throws Exception{

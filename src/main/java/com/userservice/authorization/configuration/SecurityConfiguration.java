@@ -17,6 +17,7 @@ import com.userservice.authorization.configuration.properties.RsaKeyProperties;
 import com.userservice.authorization.exception.handler.AccessDeniedHandlerImpl;
 import com.userservice.authorization.exception.handler.AuthenticationEntryPointImpl;
 import com.userservice.authorization.exception.handler.BearerTokenAuthenticationEntryPointImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -33,7 +34,6 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
-import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -42,6 +42,7 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class SecurityConfiguration {
     private final AccessDeniedHandlerImpl accessDeniedHandlerImpl;
     private final AuthenticationEntryPointImpl authenticationEntryPointImpl;
@@ -86,11 +87,12 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/api/V1/users/signup").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/V1/users/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
-                        .requestMatchers("/api/V1/clients/register").hasAuthority("SCOPE_client.write")
+                        .requestMatchers("/api/V1/user/signup").permitAll()
+                        .requestMatchers("/api/V1/user/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
+                        .requestMatchers("/api/V1/client/**").hasAnyAuthority("SCOPE_client.read", "ROLE_admin")
+                        .requestMatchers("/api/V1/client/register").hasAuthority("SCOPE_client.write")
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
@@ -145,13 +147,6 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder()
-                .oidcClientRegistrationEndpoint("api/V1/clients/register")
-                .build();
-    }
-
-    @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
         return (context) -> {
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
@@ -170,7 +165,7 @@ public class SecurityConfiguration {
                             claims.put("roles", roles);
                         }
                     }catch (Exception e) {
-                        System.out.println("Error Reading UserData : " + e.toString());
+                        log.warn("Error Reading UserData : " + e);
                     }
                 });
             }

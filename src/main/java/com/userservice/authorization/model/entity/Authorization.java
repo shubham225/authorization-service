@@ -3,8 +3,14 @@ package com.userservice.authorization.model.entity;
 import java.time.Instant;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "`authorization`")
 public class Authorization {
     @Id

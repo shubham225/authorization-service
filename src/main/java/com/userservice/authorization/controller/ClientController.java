@@ -1,9 +1,7 @@
 package com.userservice.authorization.controller;
 
 import com.userservice.authorization.model.dto.ClientDTO;
-import com.userservice.authorization.model.dto.ClientRegistrationRequestDto;
-import com.userservice.authorization.model.dto.ClientRegistrationResponseDto;
-import com.userservice.authorization.model.entity.Client;
+import com.userservice.authorization.model.dto.RegisterClientDTO;
 import com.userservice.authorization.model.result.AppResult;
 import com.userservice.authorization.service.ClientService;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +19,6 @@ public class ClientController {
     }
 
     @RequestMapping(
-            path = "/register",
-            method = RequestMethod.POST
-    )
-    public ClientRegistrationResponseDto register(@RequestBody ClientRegistrationRequestDto client) throws Exception {
-        return clientService.registerClient(client);
-    }
-
-    @RequestMapping(
             path = "/",
             method = RequestMethod.GET
     )
@@ -42,16 +32,16 @@ public class ClientController {
             method = RequestMethod.GET
     )
     public ResponseEntity<AppResult> getClientByID(@PathVariable String id) {
-        ClientDTO client = clientService.getClientByID(id);
+        ClientDTO client = clientService.getClientDTOByID(id);
         return AppResult.success("", client);
     }
 
     @RequestMapping(
-            path = "/",
+            path = "/register",
             method = RequestMethod.POST
     )
     public ResponseEntity<AppResult> addNewClient(@RequestBody ClientDTO request) {
-        ClientDTO client = clientService.addNewClient(request);
+        RegisterClientDTO client = clientService.addNewClient(request);
         return AppResult.success("", client);
     }
 
@@ -60,7 +50,7 @@ public class ClientController {
             method = RequestMethod.PUT
     )
     public ResponseEntity<AppResult> regenerateSecret(@PathVariable String id) {
-        ClientDTO client = clientService.regenerateSecret(id);
+        RegisterClientDTO client = clientService.regenerateSecret(id);
         return AppResult.success("", client);
     }
 }
