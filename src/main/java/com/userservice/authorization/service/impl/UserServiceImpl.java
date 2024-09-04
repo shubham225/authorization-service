@@ -1,14 +1,14 @@
 package com.userservice.authorization.service.impl;
 
-import com.userservice.authorization.exception.IllegalValueException;
 import com.userservice.authorization.exception.InvalidPasswordException;
-import com.userservice.authorization.exception.UserAlreadyExistsException;
 import com.userservice.authorization.model.dto.ChangePasswordDTO;
+import com.userservice.authorization.model.dto.CustomMetricsDTO;
 import com.userservice.authorization.model.dto.UserCreationDTO;
 import com.userservice.authorization.model.dto.UserDTO;
 import com.userservice.authorization.model.entity.User;
 import com.userservice.authorization.model.mapper.UserDTOMapper;
 import com.userservice.authorization.repository.UserRepository;
+import com.userservice.authorization.service.ClientService;
 import com.userservice.authorization.service.RoleService;
 import com.userservice.authorization.service.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,15 +26,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserDTOMapper userDTOMapper;
     private final RoleService  roleService;
+    private final ClientService clientService;
     private final PasswordEncoder passwordEncoder;
 
 
     public UserServiceImpl(UserRepository userRepository,
                            UserDTOMapper userDTOMapper,
-                           RoleService roleService, PasswordEncoder passwordEncoder) {
+                           RoleService roleService, ClientService clientService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userDTOMapper = userDTOMapper;
         this.roleService = roleService;
+        this.clientService = clientService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -59,6 +61,11 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("User with id '"+ id + "' doesn't exists");
 
         return userOptional.get();
+    }
+
+    @Override
+    public Long getTotalCount() {
+        return userRepository.count();
     }
 
     @Override

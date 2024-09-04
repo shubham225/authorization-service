@@ -13,4 +13,5 @@ public interface ClientService {
     ClientDTO getClientDTOByID(String id);
     RegisterClientDTO addNewClient(ClientDTO dto);
     RegisterClientDTO regenerateSecret(String id);
+    Long getTotalCount();
 }

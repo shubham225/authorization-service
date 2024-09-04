@@ -2,6 +2,7 @@ package com.userservice.authorization.controller;
 
 import com.userservice.authorization.common.message.AuthMessage;
 import com.userservice.authorization.model.dto.ChangePasswordDTO;
+import com.userservice.authorization.model.dto.CustomMetricsDTO;
 import com.userservice.authorization.model.dto.UserCreationDTO;
 import com.userservice.authorization.model.dto.UserDTO;
 import com.userservice.authorization.model.result.AppResult;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/V1/user")
+@RequestMapping("api/V1/users")
 public class UserController {
     private final UserService userService;
 
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @RequestMapping(
-            path = "/",
+            path = "",
             method = RequestMethod.GET
     )
     public ResponseEntity<AppResult> getAllUsers() {
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @RequestMapping(
-            path = "/",
+            path = "",
             method = RequestMethod.POST
     )
     public ResponseEntity<AppResult> addNewUser(@RequestBody UserCreationDTO request) {
@@ -55,5 +56,14 @@ public class UserController {
     public ResponseEntity<AppResult> changePassword(@RequestBody ChangePasswordDTO request) {
         UserDTO user = userService.changePassword(request);
         return AppResult.success(AuthMessage.SUCCESS_MESSAGE, user);
+    }
+
+    @RequestMapping(
+            path = "/count",
+            method = RequestMethod.GET
+    )
+    public ResponseEntity<AppResult> getCount() {
+        Long userCount = userService.getTotalCount();
+        return AppResult.success(AuthMessage.SUCCESS_MESSAGE, userCount);
     }
 }

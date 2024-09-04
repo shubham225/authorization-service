@@ -128,6 +128,11 @@ public class ClientServiceImpl implements ClientService {
         return registerClientDTOMapper.apply(client);
     }
 
+    @Override
+    public Long getTotalCount() {
+        return clientRepository.count();
+    }
+
     private void validateClientDetails(ClientDTO client) throws Exception {
         Assert.notNull(client, "request should have value.");
         Assert.notNull(client.getClientName(), "client_name should be present in the request.");

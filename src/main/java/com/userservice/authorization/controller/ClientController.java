@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/V1/client")
+@RequestMapping("api/V1/clients")
 public class ClientController {
     private final ClientService clientService;
 
@@ -20,7 +20,7 @@ public class ClientController {
     }
 
     @RequestMapping(
-            path = "/",
+            path = "",
             method = RequestMethod.GET
     )
     public ResponseEntity<AppResult> getAllClients() {
@@ -53,5 +53,14 @@ public class ClientController {
     public ResponseEntity<AppResult> regenerateSecret(@PathVariable String id) {
         RegisterClientDTO client = clientService.regenerateSecret(id);
         return AppResult.success(AuthMessage.SUCCESS_MESSAGE, client);
+    }
+
+    @RequestMapping(
+            path = "/count",
+            method = RequestMethod.GET
+    )
+    public ResponseEntity<AppResult> getCount() {
+        Long clientCount = clientService.getTotalCount();
+        return AppResult.success(AuthMessage.SUCCESS_MESSAGE, clientCount);
     }
 }

@@ -4,6 +4,8 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,8 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -90,7 +94,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/V1/role/**").hasAnyAuthority("ROLE_admin")
+                        .requestMatchers("/api/V1/role/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
                         .requestMatchers("/api/V1/user/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
                         .requestMatchers("/api/V1/scope/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
                         .requestMatchers("/api/V1/client/**").hasAnyAuthority("SCOPE_client.read", "ROLE_admin")
@@ -98,7 +102,7 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+//                .cors(AbstractHttpConfigurer::disable)
                 // If I add 'oauth2ResourceServer' in SecurityFilterChain order(1) spring gives
                 // access denied for every request.
                 .oauth2ResourceServer((resourceServer) -> resourceServer    // Accept access tokens for User Info and/or Client Registration
@@ -169,7 +173,7 @@ public class SecurityConfiguration {
                     }catch (Exception e) {
                         log.warn("Error Reading UserData : " + e);
                     }
-                });
+                }).expiresAt(Instant.now().plus(1, ChronoUnit.DAYS));
             }
         };
     }

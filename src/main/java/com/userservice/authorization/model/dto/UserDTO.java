@@ -1,7 +1,5 @@
 package com.userservice.authorization.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.userservice.authorization.model.entity.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/V1/role")
+@RequestMapping("/api/V1/roles")
 public class RoleController {
     private final RoleService roleService;
 
@@ -19,7 +19,7 @@ public class RoleController {
     }
 
     @RequestMapping(
-            path = "/",
+            path = "",
             method = RequestMethod.GET
     )
     public ResponseEntity<AppResult> getAllRoles() {
@@ -37,7 +37,7 @@ public class RoleController {
     }
 
     @RequestMapping(
-            path = "/",
+            path = "",
             method = RequestMethod.POST
     )
     public ResponseEntity<AppResult> addNewRole(@RequestBody RoleDTO request) {

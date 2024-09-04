@@ -40,7 +40,7 @@ management:
     enabled-by-default: true
     web:
       exposure:
-        include: health, info
+        include: health, info, metrics
   info:
     env:
       enabled: true

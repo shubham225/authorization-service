@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/V1/scope")
+@RequestMapping("/api/V1/scopes")
 public class ScopeController {
     private final ScopeService scopeService;
 
@@ -19,7 +19,7 @@ public class ScopeController {
     }
 
     @RequestMapping(
-            path = "/",
+            path = "",
             method = RequestMethod.GET
     )
     public ResponseEntity<AppResult> getAllScopes() {
@@ -37,7 +37,7 @@ public class ScopeController {
     }
 
     @RequestMapping(
-            path = "/",
+            path = "",
             method = RequestMethod.POST
     )
     public ResponseEntity<AppResult> addNewScope(@RequestBody ScopeDTO request) {
