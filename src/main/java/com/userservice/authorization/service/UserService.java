@@ -13,7 +13,7 @@ public interface UserService {
     List<UserDTO> getAllUsers();
     UserDTO getUserDTOByID(UUID id);
     UserDTO addNewUser(UserCreationDTO user);
-    UserDTO changePassword(ChangePasswordDTO user);
+    UserDTO changePassword(String Username, ChangePasswordDTO user);
     User getUserByID(UUID id);
     Long getTotalCount();
 }

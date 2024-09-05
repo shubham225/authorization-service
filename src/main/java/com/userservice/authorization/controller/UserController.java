@@ -10,6 +10,7 @@ import com.userservice.authorization.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,9 +54,10 @@ public class UserController {
             path = "/changePassword",
             method = RequestMethod.POST
     )
-    public ResponseEntity<AppResult> changePassword(@RequestBody ChangePasswordDTO request) {
-        UserDTO user = userService.changePassword(request);
-        return AppResult.success(AuthMessage.SUCCESS_MESSAGE, user);
+    public ResponseEntity<AppResult> changePassword(@RequestBody ChangePasswordDTO request, Principal principal) {
+        String UserName = principal.getName();
+        UserDTO user = userService.changePassword(UserName, request);
+        return AppResult.success(AuthMessage.PASSWORD_CHANGED_MESSAGE, user);
     }
 
     @RequestMapping(

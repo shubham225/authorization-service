@@ -10,7 +10,7 @@ import java.util.UUID;
 @Setter
 @Builder
 public class ChangePasswordDTO {
-    private UUID userId;
     private String oldPassword;
     private String newPassword;
+    private String confirmPassword;
 }

@@ -93,10 +93,18 @@ public class UserServiceImpl implements UserService {
         return userDTOMapper.apply(user1);
     }
 
-    @Override
-    public UserDTO changePassword(ChangePasswordDTO userDto) {
-        User user = getUserByID(userDto.getUserId());
+    public User getUserByName(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
 
+        if(userOptional.isEmpty())
+            throw new UsernameNotFoundException("User with username '"+ username + "' doesn't exists");
+
+        return userOptional.get();
+    }
+
+    @Override
+    public UserDTO changePassword(String username, ChangePasswordDTO userDto) {
+        User user = getUserByName(username);
         validatePassword(userDto, user);
         user.setPassword(passwordEncoder.encode(userDto.getNewPassword()));
 
@@ -106,7 +114,7 @@ public class UserServiceImpl implements UserService {
 
     private void validatePassword(ChangePasswordDTO userDTO, User user) {
         Assert.notNull(userDTO, "request should have some value.");
-        Assert.notNull(userDTO.getUserId(), "User ID should be present in the request");
+//        Assert.notNull(userDTO.getUserId(), "User ID should be present in the request");
         Assert.notNull(userDTO.getNewPassword(), "password should be present in the request");
         Assert.hasText(userDTO.getNewPassword(), "password cannot be blank.");
 

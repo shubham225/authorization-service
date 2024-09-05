@@ -102,7 +102,6 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-//                .cors(AbstractHttpConfigurer::disable)
                 // If I add 'oauth2ResourceServer' in SecurityFilterChain order(1) spring gives
                 // access denied for every request.
                 .oauth2ResourceServer((resourceServer) -> resourceServer    // Accept access tokens for User Info and/or Client Registration
