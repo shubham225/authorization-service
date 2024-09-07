@@ -11,6 +11,16 @@ Before you begin, ensure you have met the following requirements:
 - **Maven:** The project uses Maven as the build system. Install Maven by following the instructions [here](https://maven.apache.org/install.html).
 - **Database**: Set up a MySQL or MariaDB database server. You can install MySQL or MariaDB server locally on your development machine or use a cloud-based database service. You can download MySQL from the [official MySQL website](https://dev.mysql.com/downloads/) or MariaDB from the [official MariaDB website](https://mariadb.org/download/).
 
+## Features
+
+1. **OAuth2 Framework**: Supports multiple grant types (Authorization Code, Implicit, Client Credentials, etc.) with secure token issuance and validation.
+2. **JWT Token Management**: Securely handles access and refresh tokens with encryption.
+3. **Client Scopes & Roles**: Customizable client scopes and role-based access control (RBAC).
+4. **Client Registration API**: Endpoints for registering, updating, and managing OAuth clients.
+5. **User Management API**: Endpoints for creating, updating, and managing user accounts securely.
+6. **Client Registration UI**: Easy-to-use interface for registering and managing OAuth clients with real-time validation.
+7. **User Management Dashboard**: Interface for creating, updating, and managing users, with role-based permissions.
+
 ## Getting Started
 
 To get a local copy up and running, follow these simple steps:
@@ -44,12 +54,17 @@ Follow these steps to deploy the application in a production environment:
    ssh user@your-server-ip
 4. Run the application:
     ```bash
-   java -jar /path/to/deployment/authorization-server-0.0.1.jar
+   java -jar <path-to-deployment>/authorization-server-0.0.1.jar -Dspring.profiles.active=mysql
+   ```
+   here option `-Dspring.profiles.active=mysql` is optional if not given then application will by default start with in memory H2 Database.
+
 5. The application will be deployed and accessible on the specified port. Make sure to configure environment-specific settings and secure any sensitive information.
+
+**_Please Note: Initial credentials for admin will be ```U: admin P: admin``` this needs to be changed after deployment._**
 
 ## Environment Variables
 
-To properly configure and run this project, you will need to set up the following environment variables:
+To properly configure and run this project, you will need to set up the following environment variables (database env variables not needed to set up if application is executed with profile is H2):
 
 - **AUTH_DATASOURCE_URL**: This variable should be set to the URL of your server datasource. For example, if you're using a MySQL/MariaDB database for service, the URL might look like `jdbc:mariadb://localhost:3306/your_database_name`.
 
@@ -61,17 +76,11 @@ To properly configure and run this project, you will need to set up the followin
 
 Make sure to set these environment variables either directly in your development environment or using a configuration file such as `application.properties` or `application.yml` for local development. Additionally, when deploying your Spring Boot application, you can configure these variables through your deployment environment settings.
 
-## Features
-
-- **JWT Token Handling:** Generate and validate JWT tokens for secure communication.
-- **Client Registration:** Allow applications to register for OAuth2 authorization.
-- **User Signup:** Enable user registration for accessing protected resources.
-
 ## API Endpoints
 
 Here are some of the key API endpoints provided by the OAuth2 authorization service:
 ### Registration Endpoints
-- **`POST /api/V1/users/signup`:** Register a new user for accessing protected resources.
+- **`POST /api/V1/users/`:** Register a new user for accessing protected resources.
 - **`POST /api/V1/clients/register`:** Register a new client application for OAuth2 authorization.
 
 ### Discovery Endpoints
@@ -93,9 +102,9 @@ Refer to the [API Documentation](./docs/DOCUMENTATION.md) for a complete list of
 
 ## Generating RSA Certificates
 Before getting started, ensure you have OpenSSL installed on your system. If not, you can download and install it from [OpenSSL website](https://www.openssl.org/).
-1. Navigate to the certificates directory :
+1. Navigate to the certs directory :
    ```bash
-   cd src/main/resources/certificates/
+   cd src/main/resources/certs/
 2. Run the following command to generate a 2048-bit RSA private key:
    ```bash
    openssl genrsa -out keypair.pem 2048
@@ -107,8 +116,8 @@ Before getting started, ensure you have OpenSSL installed on your system. If not
     ```bash
    openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
 
-5. Above commands will create three files in the `certificates` directory: `keypair.pem`, `public.pem`, and `private.pem`. We don't need `keypair.pem`; this file can be deleted. The other two files will serve as the private and public keys for signing and validating JWT
+5. Above commands will create three files in the `certs` directory: `keypair.pem`, `public.pem`, and `private.pem`. We don't need `keypair.pem`; this file can be deleted. The other two files will serve as the private and public keys for signing and validating JWT
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE.md).
+This project is licensed under the MIT License - see the [MIT License](LICENSE.md) file for details.

@@ -16,9 +16,6 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
 import com.userservice.authorization.configuration.properties.RsaKeyProperties;
-import com.userservice.authorization.exception.handler.AccessDeniedHandlerImpl;
-import com.userservice.authorization.exception.handler.AuthenticationEntryPointImpl;
-import com.userservice.authorization.exception.handler.BearerTokenAuthenticationEntryPointImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,27 +36,28 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
 @Slf4j
 public class SecurityConfiguration {
-    private final AccessDeniedHandlerImpl accessDeniedHandlerImpl;
-    private final AuthenticationEntryPointImpl authenticationEntryPointImpl;
-    private final BearerTokenAuthenticationEntryPointImpl myBearerTokenAuthenticationEntryPoint;
+    private final AccessDeniedHandler accessDeniedHandler;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final BearerTokenAuthenticationEntryPoint myBearerTokenAuthenticationEntryPoint;
     private final RsaKeyProperties rsaKeys;
 
-    SecurityConfiguration(AccessDeniedHandlerImpl accessDeniedHandlerImpl,
-                          AuthenticationEntryPointImpl authenticationEntryPointImpl,
-                          BearerTokenAuthenticationEntryPointImpl myBearerTokenAuthenticationEntryPoint,
+    SecurityConfiguration(AccessDeniedHandler accessDeniedHandler,
+                          AuthenticationEntryPoint authenticationEntryPoint,
+                          BearerTokenAuthenticationEntryPoint myBearerTokenAuthenticationEntryPoint,
                           RsaKeyProperties                      rsaKeys) {
-        this.accessDeniedHandlerImpl = accessDeniedHandlerImpl;
-        this.authenticationEntryPointImpl = authenticationEntryPointImpl;
+        this.accessDeniedHandler = accessDeniedHandler;
+        this.authenticationEntryPoint = authenticationEntryPoint;
         this.myBearerTokenAuthenticationEntryPoint = myBearerTokenAuthenticationEntryPoint;
         this.rsaKeys = rsaKeys;
     }
@@ -109,8 +107,8 @@ public class SecurityConfiguration {
                         // This code is added to handle entry point exceptions by ControllerAdvice,
                         // else these exceptions didn't reach controllers.
                         .authenticationEntryPoint(this.myBearerTokenAuthenticationEntryPoint)
-                        .accessDeniedHandler(this.accessDeniedHandlerImpl))
-                .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.authenticationEntryPointImpl))
+                        .accessDeniedHandler(this.accessDeniedHandler))
+                .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.authenticationEntryPoint))
                 // Form login handles the redirect to the login page from the
                 // authorization server filter chain
 //                .formLogin(Customizer.withDefaults());
@@ -172,7 +170,7 @@ public class SecurityConfiguration {
                     }catch (Exception e) {
                         log.warn("Error Reading UserData : " + e);
                     }
-                }).expiresAt(Instant.now().plus(1, ChronoUnit.DAYS));
+                }).expiresAt(Instant.now().plus(24, ChronoUnit.HOURS));
             }
         };
     }
