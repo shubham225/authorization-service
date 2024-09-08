@@ -16,6 +16,8 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
 import com.userservice.authorization.configuration.properties.RsaKeyProperties;
+import com.userservice.authorization.exception.handler.AuthenticationEntryPointImpl;
+import com.userservice.authorization.exception.handler.BearerTokenAuthenticationEntryPointImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,8 +38,6 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -48,13 +48,13 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @Slf4j
 public class SecurityConfiguration {
     private final AccessDeniedHandler accessDeniedHandler;
-    private final AuthenticationEntryPoint authenticationEntryPoint;
-    private final BearerTokenAuthenticationEntryPoint myBearerTokenAuthenticationEntryPoint;
+    private final AuthenticationEntryPointImpl authenticationEntryPoint;
+    private final BearerTokenAuthenticationEntryPointImpl myBearerTokenAuthenticationEntryPoint;
     private final RsaKeyProperties rsaKeys;
 
     SecurityConfiguration(AccessDeniedHandler accessDeniedHandler,
-                          AuthenticationEntryPoint authenticationEntryPoint,
-                          BearerTokenAuthenticationEntryPoint myBearerTokenAuthenticationEntryPoint,
+                          AuthenticationEntryPointImpl authenticationEntryPoint,
+                          BearerTokenAuthenticationEntryPointImpl myBearerTokenAuthenticationEntryPoint,
                           RsaKeyProperties                      rsaKeys) {
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationEntryPoint = authenticationEntryPoint;
