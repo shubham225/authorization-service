@@ -97,6 +97,7 @@ Here are some of the key API endpoints provided by the OAuth2 authorization serv
 ### Other Endpoints
 - **`GET /actuator/health`:** Exposes the health status of the application
 - **`GET /actuator/info`:** Provides general information about the application.
+- **`GET /swagger-ui/index.html`:** Swagger UI endpoint for API Documentation
 
 Refer to the [API Documentation](./docs/DOCUMENTATION.md) for a complete list of endpoints and their usage. 
 

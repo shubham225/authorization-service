@@ -92,6 +92,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").hasAnyAuthority("ROLE_user", "ROLE_admin")
                         .requestMatchers("/api/V1/role/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
                         .requestMatchers("/api/V1/user/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
                         .requestMatchers("/api/V1/scope/**").hasAnyAuthority("SCOPE_profile", "ROLE_admin")
