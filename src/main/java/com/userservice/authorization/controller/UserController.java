@@ -68,4 +68,14 @@ public class UserController {
         Long userCount = userService.getTotalCount();
         return AppResult.success(AuthMessage.SUCCESS_MESSAGE, userCount);
     }
+
+    @RequestMapping(
+            path = "/login",
+            method = RequestMethod.GET
+    )
+    public ResponseEntity<AppResult> getUserByLogin(Principal principal) {
+        String UserName = principal.getName();
+        UserDTO user = userService.getUserByUsername(UserName);
+        return AppResult.success(AuthMessage.SUCCESS_MESSAGE, user);
+    }
 }

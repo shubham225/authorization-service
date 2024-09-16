@@ -64,6 +64,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO getUserByUsername(String Username) {
+        User user = getUserByName(Username);
+        return userDTOMapper.apply(user);
+    }
+
+    @Override
     public Long getTotalCount() {
         return userRepository.count();
     }

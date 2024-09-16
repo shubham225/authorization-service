@@ -15,5 +15,6 @@ public interface UserService {
     UserDTO addNewUser(UserCreationDTO user);
     UserDTO changePassword(String Username, ChangePasswordDTO user);
     User getUserByID(UUID id);
+    UserDTO getUserByUsername(String Username);
     Long getTotalCount();
 }
