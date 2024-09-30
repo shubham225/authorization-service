@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = userOptional.get();
 
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+        return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .roles(getGrantedAuthorities(user.getRoles()))
@@ -35,8 +35,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .credentialsExpired(user.isCredentialsExpired())
                 .disabled(!user.isActive())
                 .build();
-
-        return userDetails;
 
         // commented because of the 'Cannot invoke "com.userservice.authorization.models.User.getPassword()" because "this.user" is null' error with Authorization Code flow
         // TODO : Find out the cause of the error.
