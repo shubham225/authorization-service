@@ -1,43 +1,28 @@
 package com.userservice.authorization;
 
+import com.userservice.authorization.model.dto.UserDTO;
+import com.userservice.authorization.service.UserService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.test.annotation.Commit;
 
-import java.util.UUID;
+import java.util.List;
 
 @SpringBootTest
 class AuthorizationServiceApplicationTests {
-//	@Autowired
-//	BCryptPasswordEncoder bCryptPasswordEncoder;
-//	@Autowired
-//	RegisteredClientRepository clientRepository;
+	@Autowired
+	private UserService userService;
 
 	@Test
 	void contextLoads() {
 	}
 
-//	@Test
-//	@Commit
-//	void addEntryInClients() {
-//		RegisteredClient registrarClient = RegisteredClient.withId(UUID.randomUUID().toString())
-//				.clientId("registrar-client")
-//				.clientSecret(bCryptPasswordEncoder.encode("secret"))
-//				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-//				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-//				.scope("client.create")
-//				.scope("client.read")
-//				.build();
-//
-//		clientRepository.save(registrarClient);
-//	}
+	@Test
+	void getAllUsersTest() {
+		List<UserDTO> users = userService.getAllUsers();
+		Assertions.assertNotNull(users);
+	}
+
 
 }
