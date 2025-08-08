@@ -86,8 +86,6 @@ java -jar /path/to/deployment/authorization-server-0.0.1.jar -Dspring.profiles.a
 
 💡 **Tip:** Use `-Dspring.profiles.active=mysql` for MySQL/MariaDB; omit for H2 in-memory mode.
 
----
-
 ## 🔑 Default Credentials
 ```text
 Username: admin
@@ -95,7 +93,6 @@ Password: admin
 ```
 ⚠️ **Change these credentials immediately after deployment!**
 
----
 
 ## 🔧 Environment Variables
 
@@ -106,7 +103,6 @@ Password: admin
 | `AUTH_DB_PASSWORD`    | Database password                                          | `strongpassword`                            |
 | `JWT_KEY_ID` *(opt)*  | Custom JWT Key ID                                          | `my-key-id`                                 |
 
----
 
 ## 📡 API Endpoints
 
@@ -131,7 +127,6 @@ Password: admin
 
 📖 Full docs → [API Documentation](./docs/DOCUMENTATION.md)  
 
----
 
 ## 🔐 Generating RSA Certificates
 
@@ -143,7 +138,6 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out priv
 ```
 > Keep only `private.pem` and `public.pem`.
 
----
 
 ## 📜 License
 This project is licensed under the **MIT License** → [View License](LICENSE.md)
