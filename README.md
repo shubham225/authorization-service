@@ -1,4 +1,4 @@
-# OAuth 2.0 Authorization Server – Spring Boot JWT Implementation
+# OAuth 2.0 Authorization Server – Spring Boot JWT Implementation ![Backend](https://img.shields.io/badge/{_}-Backend-16A34A?style=flat-square)
 
 [![Java](https://img.shields.io/badge/Java-17+-blue.svg?logo=java)](https://openjdk.org/projects/jdk/17/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.1-brightgreen.svg?logo=springboot)](https://spring.io/projects/spring-boot)
