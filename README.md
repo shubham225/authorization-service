@@ -1,124 +1,149 @@
-# OAuth2 Authorization Server
-This is a simple OAuth2 authorization server written in Spring Boot, capable of generating and validating JWT tokens, client registration, and user signup.
+# OAuth 2.0 Authorization Server – Spring Boot JWT Implementation
 
-## Prerequisites
-This project is created using Java 17 and Spring boot 3.2.1, maven framework is used as build system.
+[![Java](https://img.shields.io/badge/Java-17+-blue.svg?logo=java)](https://openjdk.org/projects/jdk/17/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.1-brightgreen.svg?logo=springboot)](https://spring.io/projects/spring-boot)
+[![Maven](https://img.shields.io/badge/Build-Maven-orange.svg?logo=apache-maven)](https://maven.apache.org/)
+[![Database](https://img.shields.io/badge/Database-MySQL%20%7C%20MariaDB-blue.svg?logo=mysql)](https://www.mysql.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
 
-Before you begin, ensure you have met the following requirements:
+A **secure OAuth2 Authorization Server** built with **Spring Boot**, supporting multiple grant types, JWT-based token management, client registration, and user management. Perfect for securing your microservices or API gateway.
 
-- **Java:** Version 17 or later. You can download it from [OpenJDK](https://openjdk.java.net/).
-- **Spring Boot:** Version 3.2.1. Check the [official Spring Boot website](https://spring.io/projects/spring-boot) for details.
-- **Maven:** The project uses Maven as the build system. Install Maven by following the instructions [here](https://maven.apache.org/install.html).
-- **Database**: Set up a MySQL or MariaDB database server. You can install MySQL or MariaDB server locally on your development machine or use a cloud-based database service. You can download MySQL from the [official MySQL website](https://dev.mysql.com/downloads/) or MariaDB from the [official MariaDB website](https://mariadb.org/download/).
 
-## Features
+## 📋 Features
 
-1. **OAuth2 Framework**: Supports multiple grant types (Authorization Code, Implicit, Client Credentials, etc.) with secure token issuance and validation.
-2. **JWT Token Management**: Securely handles access and refresh tokens with encryption.
-3. **Client Scopes & Roles**: Customizable client scopes and role-based access control (RBAC).
-4. **Client Registration API**: Endpoints for registering, updating, and managing OAuth clients.
-5. **User Management API**: Endpoints for creating, updating, and managing user accounts securely.
-6. **Client Registration UI**: Easy-to-use interface for registering and managing OAuth clients with real-time validation.
-7. **User Management Dashboard**: Interface for creating, updating, and managing users, with role-based permissions.
+✅ **OAuth2 Framework** – Supports Authorization Code, Implicit, Client Credentials, and more.  
+✅ **JWT Token Management** – Secure access & refresh tokens with encryption.  
+✅ **Custom Scopes & RBAC** – Fine-grained control over API access.  
+✅ **Client Registration API** – Fully functional endpoints for client management.  
+✅ **User Management API** – Secure CRUD operations on user accounts.  
+✅ **Admin Dashboards** – Web-based UI for managing clients and users.  
+✅ **OpenAPI Documentation** – Easy API exploration via Swagger UI.
 
-## Getting Started
 
-To get a local copy up and running, follow these simple steps:
+## ⚙️ Prerequisites
 
-1. Clone the repository.
+Before running this project, ensure you have:
+
+- **Java 17+** → [Download OpenJDK](https://openjdk.java.net/)  
+- **Spring Boot 3.2.1** → [Official Website](https://spring.io/projects/spring-boot)  
+- **Maven** → [Install Maven](https://maven.apache.org/install.html)  
+- **MySQL/MariaDB** → [MySQL](https://dev.mysql.com/downloads/) | [MariaDB](https://mariadb.org/download/)  
+- **OpenSSL** → [Download](https://www.openssl.org/) for certificate generation
+
+## 🚀 Getting Started
+
+Follow these steps to run the Authorization Server locally.
+
+### 1️⃣ Clone the Repository
    ```bash
    git clone https://github.com/shubham225/authorization-service.git
-2. Navigate to the project directory.
-    ```bash
-   cd authorization-service
-3. Build the project using Maven.
-    ```bash
-   mvn clean install
-4. Run the application.
-    ```bash
-   mvn spring-boot:run
-5. The application will now be accessible at http://localhost:9000. Make sure to configure any additional settings or credentials according to your specific use case.
-
-## Deployment
-
-Follow these steps to deploy the application in a production environment:
-
-1. Build the JAR file:
-   ```bash
-   mvn clean install
-2. Copy the JAR file to the deployment server:
-    ```bash
-   scp target/authorization-server-0.0.1.jar user@your-server-ip:/path/to/deployment/
-3. SSH into the deployment server:
-    ```bash
-   ssh user@your-server-ip
-4. Run the application:
-    ```bash
-   java -jar <path-to-deployment>/authorization-server-0.0.1.jar -Dspring.profiles.active=mysql
    ```
-   here option `-Dspring.profiles.active=mysql` is optional if not given then application will by default start with in memory H2 Database.
+### 2️⃣ Build the Project
+```bash
+mvn clean install
+```
+This will download dependencies, compile the project, run tests, and package it into a JAR file.
 
-5. The application will be deployed and accessible on the specified port. Make sure to configure environment-specific settings and secure any sensitive information.
+### 3️⃣ Run the Application
+```bash
+mvn spring-boot:run
+```
+The server will start on **http://localhost:9000**.
 
-**_Please Note: Initial credentials for admin will be ```U: admin P: admin``` this needs to be changed after deployment._**
+- **Default Database:** In-memory H2 (no configuration needed)  
+- **Optional:** Use MySQL/MariaDB by activating the profile:  
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=mysql
+```
 
-## Environment Variables
+### 4️⃣ Access Admin Dashboard
+Login with default credentials:  
+```text
+Username: admin
+Password: admin
+```
+⚠️ **Change these credentials immediately in production.**
 
-To properly configure and run this project, you will need to set up the following environment variables (database env variables not needed to set up if application is executed with profile is H2):
+### 5️⃣ API Documentation
+Once running, explore APIs via Swagger UI:  
+```text
+http://localhost:9000/swagger-ui/index.html
+```
 
-- **AUTH_DATASOURCE_URL**: This variable should be set to the URL of your server datasource. For example, if you're using a MySQL/MariaDB database for service, the URL might look like `jdbc:mariadb://localhost:3306/your_database_name`.
+## 🌍 Deployment
 
-- **AUTH_DB_USER**: Set this variable to the username used to access your database.
+**Build JAR:**
+```bash
+mvn clean install
+```
 
-- **AUTH_DB_PASSWORD**: Set this variable to the password used to access your database.
+**Deploy to Server:**
+```bash
+scp target/authorization-server-0.0.1.jar user@your-server-ip:/path/to/deployment/
+ssh user@your-server-ip
+java -jar /path/to/deployment/authorization-server-0.0.1.jar -Dspring.profiles.active=mysql
+```
 
-- **JWT_KEY_ID [Optional]**: Set this variable if wanted custom JWT Key ID (Optional Env. Variable).
+💡 **Tip:** Use `-Dspring.profiles.active=mysql` for MySQL/MariaDB; omit for H2 in-memory mode.
 
-Make sure to set these environment variables either directly in your development environment or using a configuration file such as `application.properties` or `application.yml` for local development. Additionally, when deploying your Spring Boot application, you can configure these variables through your deployment environment settings.
+---
 
-## API Endpoints
+## 🔑 Default Credentials
+```text
+Username: admin
+Password: admin
+```
+⚠️ **Change these credentials immediately after deployment!**
 
-Here are some of the key API endpoints provided by the OAuth2 authorization service:
-### Registration Endpoints
-- **`POST /api/V1/users/`:** Register a new user for accessing protected resources.
-- **`POST /api/V1/clients/register`:** Register a new client application for OAuth2 authorization.
+---
 
-### Discovery Endpoints
-- **`GET /.well-known/oauth-authorization-server`:** Provides information about the OAuth2 Authorization Server, including its capabilities and supported endpoints.
-- **`GET /.well-known/openid-configuration`:** Publishes configuration information, including endpoints and supported features, for clients using OpenID Connect.
+## 🔧 Environment Variables
 
-### Authorization Endpoints
-- **`GET /oauth2/authorize`:** Authorization endpoint for initiating the OAuth2 authorization process.
-- **`POST /oauth2/token`:** Token endpoint for obtaining OAuth2 access tokens and refresh tokens.
-- **`GET /oauth2/jwks`:** JSON Web Key Set (JWKS) endpoint providing public keys for validating JWTs issued by the Authorization Server.
-- **`POST /oauth2/introspect`:** Token introspection endpoint for checking the validity and details of an OAuth2 token.
-- **`POST /oauth2/revoke`:** Token revocation endpoint for revoking an OAuth2 token.
+| Variable              | Description                                                | Example                                      |
+|----------------------|------------------------------------------------------------|----------------------------------------------|
+| `AUTH_DATASOURCE_URL` | JDBC URL to your database                                  | `jdbc:mariadb://localhost:3306/auth_db`     |
+| `AUTH_DB_USER`        | Database username                                          | `auth_user`                                 |
+| `AUTH_DB_PASSWORD`    | Database password                                          | `strongpassword`                            |
+| `JWT_KEY_ID` *(opt)*  | Custom JWT Key ID                                          | `my-key-id`                                 |
 
-### Other Endpoints
-- **`GET /actuator/health`:** Exposes the health status of the application
-- **`GET /actuator/info`:** Provides general information about the application.
-- **`GET /swagger-ui/index.html`:** Swagger UI endpoint for API Documentation
+---
 
-Refer to the [API Documentation](./docs/DOCUMENTATION.md) for a complete list of endpoints and their usage. 
+## 📡 API Endpoints
 
-## Generating RSA Certificates
-Before getting started, ensure you have OpenSSL installed on your system. If not, you can download and install it from [OpenSSL website](https://www.openssl.org/).
-1. Navigate to the certs directory :
-   ```bash
-   cd src/main/resources/certs/
-2. Run the following command to generate a 2048-bit RSA private key:
-   ```bash
-   openssl genrsa -out keypair.pem 2048
-3. Next, extract the public key from the private key generated in the previous step using the following command:
-    ```bash
-   openssl rsa -in keypair.pem -pubout -out public.pem
+### 🔹 Registration
+- **POST** `/api/V1/users/` – Register a new user  
+- **POST** `/api/V1/clients/register` – Register a new OAuth2 client  
 
-4. For compatibility and ease of use, convert the private key to PKCS#8 format using the following command:
-    ```bash
-   openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
+### 🔹 Discovery
+- **GET** `/.well-known/oauth-authorization-server` – OAuth2 metadata  
+- **GET** `/.well-known/openid-configuration` – OpenID Connect config  
 
-5. Above commands will create three files in the `certs` directory: `keypair.pem`, `public.pem`, and `private.pem`. We don't need `keypair.pem`; this file can be deleted. The other two files will serve as the private and public keys for signing and validating JWT
+### 🔹 Authorization & Token
+- **GET** `/oauth2/authorize` – Authorization endpoint  
+- **POST** `/oauth2/token` – Token issuance  
+- **GET** `/oauth2/jwks` – JWKS public keys  
+- **POST** `/oauth2/introspect` – Token introspection  
+- **POST** `/oauth2/revoke` – Token revocation  
 
-## License
+### 🔹 Other
+- **GET** `/actuator/health` – Health check  
+- **GET** `/swagger-ui/index.html` – Swagger documentation  
 
-This project is licensed under the MIT License - see the [MIT License](LICENSE.md) file for details.
+📖 Full docs → [API Documentation](./docs/DOCUMENTATION.md)  
+
+---
+
+## 🔐 Generating RSA Certificates
+
+```bash
+cd src/main/resources/certs/
+openssl genrsa -out keypair.pem 2048
+openssl rsa -in keypair.pem -pubout -out public.pem
+openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
+```
+> Keep only `private.pem` and `public.pem`.
+
+---
+
+## 📜 License
+This project is licensed under the **MIT License** → [View License](LICENSE.md)
