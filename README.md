@@ -34,17 +34,18 @@ Before running this project, ensure you have:
 
 Follow these steps to run the Authorization Server locally.
 
-### 1️⃣ Clone the Repository
-   ```bash
-   git clone https://github.com/shubham225/authorization-service.git
-   ```
-### 2️⃣ Build the Project
+### Clone the Repository
+```bash
+git clone https://github.com/shubham225/authorization-service.git
+```
+
+### Build the Project
 ```bash
 mvn clean install
 ```
 This will download dependencies, compile the project, run tests, and package it into a JAR file.
 
-### 3️⃣ Run the Application
+### Run the Application
 ```bash
 mvn spring-boot:run
 ```
@@ -56,7 +57,7 @@ The server will start on **http://localhost:9000**.
 mvn spring-boot:run -Dspring-boot.run.profiles=mysql
 ```
 
-### 4️⃣ Access Admin Dashboard
+### Access Admin Dashboard
 Login with default credentials:  
 ```text
 Username: admin
@@ -64,7 +65,7 @@ Password: admin
 ```
 ⚠️ **Change these credentials immediately in production.**
 
-### 5️⃣ API Documentation
+### API Documentation
 Once running, explore APIs via Swagger UI:  
 ```text
 http://localhost:9000/swagger-ui/index.html
