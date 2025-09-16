@@ -11,13 +11,13 @@ A **secure OAuth2 Authorization Server** built with **Spring Boot**, supporting 
 
 ## 📋 Features
 
-✅ **OAuth2 Framework** – Supports Authorization Code, Implicit, Client Credentials, and more.  
-✅ **JWT Token Management** – Secure access & refresh tokens with encryption.  
-✅ **Custom Scopes & RBAC** – Fine-grained control over API access.  
-✅ **Client Registration API** – Fully functional endpoints for client management.  
-✅ **User Management API** – Secure CRUD operations on user accounts.  
-✅ **Admin Dashboards** – Web-based UI for managing clients and users.  
-✅ **OpenAPI Documentation** – Easy API exploration via Swagger UI.
+- **OAuth2 Framework** – Supports Authorization Code, Implicit, Client Credentials, and more.  
+- **JWT Token Management** – Secure access & refresh tokens with encryption.  
+- **Custom Scopes & RBAC** – Fine-grained control over API access.  
+- **Client Registration API** – Fully functional endpoints for client management.  
+- **User Management API** – Secure CRUD operations on user accounts.  
+- **Admin Dashboards** – Web-based UI for managing clients and users.  
+- **OpenAPI Documentation** – Easy API exploration via Swagger UI.
 
 
 ## ⚙️ Prerequisites
