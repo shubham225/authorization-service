@@ -18,6 +18,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import com.userservice.authorization.configuration.properties.RsaKeyProperties;
 import com.userservice.authorization.exception.handler.AuthenticationEntryPointImpl;
 import com.userservice.authorization.exception.handler.BearerTokenAuthenticationEntryPointImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,21 +47,12 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @Configuration
 @EnableWebSecurity
 @Slf4j
+@RequiredArgsConstructor
 public class SecurityConfiguration {
     private final AccessDeniedHandler accessDeniedHandler;
     private final AuthenticationEntryPointImpl authenticationEntryPoint;
     private final BearerTokenAuthenticationEntryPointImpl myBearerTokenAuthenticationEntryPoint;
     private final RsaKeyProperties rsaKeys;
-
-    SecurityConfiguration(AccessDeniedHandler accessDeniedHandler,
-                          AuthenticationEntryPointImpl authenticationEntryPoint,
-                          BearerTokenAuthenticationEntryPointImpl myBearerTokenAuthenticationEntryPoint,
-                          RsaKeyProperties                      rsaKeys) {
-        this.accessDeniedHandler = accessDeniedHandler;
-        this.authenticationEntryPoint = authenticationEntryPoint;
-        this.myBearerTokenAuthenticationEntryPoint = myBearerTokenAuthenticationEntryPoint;
-        this.rsaKeys = rsaKeys;
-    }
 
     @Bean
     @Order(1)

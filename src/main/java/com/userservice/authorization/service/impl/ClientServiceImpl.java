@@ -11,6 +11,7 @@ import com.userservice.authorization.model.mapper.RegisterClientDTOMapper;
 import com.userservice.authorization.repository.ClientRepository;
 import com.userservice.authorization.service.ClientService;
 import com.userservice.authorization.service.ScopeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -25,6 +26,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
     private final RegisteredClientRepository registeredClientRepository;
     private final ClientRepository clientRepository;
@@ -32,20 +34,6 @@ public class ClientServiceImpl implements ClientService {
     private final PasswordEncoder passwordEncoder;
     private final ScopeService scopeService;
     private final RegisterClientDTOMapper registerClientDTOMapper;
-
-    public ClientServiceImpl(RegisteredClientRepository registeredClientRepository,
-                             ClientRepository           clientRepository,
-                             PasswordEncoder            passwordEncoder,
-                             ClientDTOMapper            clientDTOMapper,
-                             ScopeService               scopeService,
-                             RegisterClientDTOMapper    registerClientDTOMapper) {
-        this.registeredClientRepository = registeredClientRepository;
-        this.clientRepository = clientRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.clientDTOMapper = clientDTOMapper;
-        this.scopeService = scopeService;
-        this.registerClientDTOMapper = registerClientDTOMapper;
-    }
 
     @Override
     public Client getClientByName(String clientName) {

@@ -11,6 +11,7 @@ import com.userservice.authorization.repository.UserRepository;
 import com.userservice.authorization.service.ClientService;
 import com.userservice.authorization.service.RoleService;
 import com.userservice.authorization.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,23 +23,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserDTOMapper userDTOMapper;
     private final RoleService  roleService;
-    private final ClientService clientService;
     private final PasswordEncoder passwordEncoder;
-
-
-    public UserServiceImpl(UserRepository userRepository,
-                           UserDTOMapper userDTOMapper,
-                           RoleService roleService, ClientService clientService, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.userDTOMapper = userDTOMapper;
-        this.roleService = roleService;
-        this.clientService = clientService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public List<UserDTO> getAllUsers() {
