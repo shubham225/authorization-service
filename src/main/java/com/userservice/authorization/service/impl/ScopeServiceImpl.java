@@ -6,6 +6,7 @@ import com.userservice.authorization.model.entity.Scope;
 import com.userservice.authorization.model.mapper.ScopeDTOMapper;
 import com.userservice.authorization.repository.ScopeRepository;
 import com.userservice.authorization.service.ScopeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,14 +14,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ScopeServiceImpl implements ScopeService {
     private final ScopeRepository scopeRepository;
     private final ScopeDTOMapper scopeDTOMapper;
-
-    public ScopeServiceImpl(ScopeRepository scopeRepository, ScopeDTOMapper scopeDTOMapper) {
-        this.scopeRepository = scopeRepository;
-        this.scopeDTOMapper = scopeDTOMapper;
-    }
 
     @Override
     public List<ScopeDTO> getAllScopes() {

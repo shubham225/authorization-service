@@ -5,6 +5,7 @@ import com.userservice.authorization.model.dto.RoleDTO;
 import com.userservice.authorization.model.entity.Role;
 import com.userservice.authorization.repository.RoleRepository;
 import com.userservice.authorization.service.RoleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.userservice.authorization.model.mapper.RoleDTOMapper;
 
@@ -13,14 +14,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     private final RoleDTOMapper roleDTOMapper;
-
-    public RoleServiceImpl(RoleRepository roleRepository, RoleDTOMapper roleDTOMapper) {
-        this.roleRepository = roleRepository;
-        this.roleDTOMapper = roleDTOMapper;
-    }
 
     @Override
     public List<RoleDTO> getAllRoles() {
