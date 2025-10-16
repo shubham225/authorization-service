@@ -1,5 +1,7 @@
 package com.userservice.authorization.model.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +14,9 @@ import java.util.UUID;
 @Builder
 public class UserDTO {
     private UUID    id;
+    @NotBlank
     private String  username;
+    @NotBlank
     private String  email;
     private String  mobile;
     private String  address;
@@ -20,5 +24,6 @@ public class UserDTO {
     private String  country;
     private boolean isActive;
     private boolean isAccountLocked;
+    @NotEmpty
     private Set<String> roles;
 }
